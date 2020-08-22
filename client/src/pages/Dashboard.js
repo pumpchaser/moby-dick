@@ -1,16 +1,48 @@
 import React, { Component, Fragment } from 'react';
 import AddTokenModal from '../dashboard/AddToken';
+import { Button  } from 'semantic-ui-react'
+import web3 from '../web3';
 
 class Dashboard extends Component {
   componentDidMount() {
   }
 
+  async processTransactions() {
+    const latestBlockNumber = await web3.eth.getBlockNumber();
+    // console.log(latestBlockNumber)
+
+    const block = await web3.eth.getBlock(latestBlockNumber)
+    // console.log(block)
+
+    const transactionHashes = block.transactions
+    // console.log(transactionHashes)
+
+    let transactions = [] 
+
+    for (const txHash of transactionHashes) {
+      let tx = await web3.eth.getTransaction(txHash)
+      transactions.push(tx)
+      console.log(tx);
+
+    }
+
+    // console.log(transactions)
+
+  }
+
+
+// var myContract = new web3.eth.Contract([...], '0xde0B295669a9FD93d5F28D9Ec85E40f4cb697BAe', {
+//     from: '0x1234567890123456789012345678901234567891', // default from address
+//     gasPrice: '20000000000' // default gas price in wei, 20 gwei in this case
+// });
+
   render() {
     return(
       <Fragment>
           <div className="center">
-            <h2>WhaleHunter</h2>
             <AddTokenModal>Add Token</AddTokenModal>
+            <Button onClick={this.processTransactions}>Process Transactions</Button>
+
           </div> 
       </Fragment>
     )
