@@ -15,7 +15,8 @@
     "react-scripts": "3.4.3",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^1.2.0",
-    "styled-components": "^5.1.1"
+    "styled-components": "^5.1.1",
+    "web3": "^1.2.11"
   },
   "scripts": {
     "start": "react-scripts start",
