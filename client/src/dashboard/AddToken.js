@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React from 'react';
 
 import { Modal, Header, Button, Form  } from 'semantic-ui-react'
 
