@@ -4,7 +4,7 @@ import Header from './Header';
 export default(props) => {
   return(
     <Fragment>
-      <Header/>
+      <Header account={props.account} drizzle={props.drizzle} drizzleState={props.drizzleState}/>
 
       {props.children}
     </Fragment>

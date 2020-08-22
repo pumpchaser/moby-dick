@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Modal, Header, Button, Form  } from 'semantic-ui-react'
+import { Modal, Button, Form  } from 'semantic-ui-react'
 
 function AddTokenModal() {
   const [open, setOpen] = React.useState(false)

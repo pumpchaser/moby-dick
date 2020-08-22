@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Menu, Button } from 'semantic-ui-react';
 import styled from 'styled-components'
+import Web3 from 'web3';
 
 const MenuWrapper = styled.div`
   border-bottom: 1px solid #e6e4e4;
@@ -12,9 +13,32 @@ const Logo = styled.p`
 `
 
 class Header extends Component {
-    doNothing() {
-        console.log("Do nothing")
+  login() {
+      if (window.ethereum) {
+        window.web3 = new Web3(window.ethereum)
+        window.ethereum.enable()
+      }
+      else if (window.web3) {
+        window.web3 = new Web3(window.web3.currentProvider)
+      }
+      else {
+        window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
+      }
+  }
+
+
+  renderCurrentSession(){
+    if(window.ethereum.selectedAddress){
+      return(
+        window.ethereum.selectedAddress
+      )
     }
+    return(
+      <Menu.Item >
+        <Button primary inverted onClick={this.login}>Login</Button>
+      </Menu.Item>
+    )
+  }
   render() {
     return(
       <div>
@@ -26,9 +50,8 @@ class Header extends Component {
               </a>
             </Menu.Item>
             <Menu.Menu position='right'>
-              <Menu.Item >
-                <Button primary inverted onClick={this.doNothing}>Btn</Button>
-              </Menu.Item>
+              {this.renderCurrentSession()}
+
             </Menu.Menu>
           </Menu>
         </MenuWrapper>
