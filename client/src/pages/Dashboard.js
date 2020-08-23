@@ -14,6 +14,7 @@ class Dashboard extends Component {
     const message = `TRANSFER from ${event.address}. https://etherscan.io/tx/${event.transactionHash}`
     toast(message)
   }
+  
   async getContractAbi(contractAddress) {
     const etherscanURL = `https://api.etherscan.io/api?module=contract&action=getabi&address=${contractAddress}&apikey=${process.env.REACT_APP_ETHERSCAN_API_KEY}`
     const response = await axios.get(etherscanURL)
