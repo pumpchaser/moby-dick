@@ -19,7 +19,7 @@ class Dashboard extends Component {
     const contractAbi = await this.getContractAbi(contractAddress)
 
     const contract = new web3.eth.Contract(contractAbi, contractAddress)
-    contract.events.Transfer(console.log)
+    contract.events.Transfer((err, event) => {console.log(event)})
   }
 
   render() {
