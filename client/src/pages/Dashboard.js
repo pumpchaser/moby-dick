@@ -9,12 +9,19 @@ class Dashboard extends Component {
   componentDidMount() {
   }
 
-  notify(event) {
-    console.log(event)
-    const message = `TRANSFER from ${event.address}. https://etherscan.io/tx/${event.transactionHash}`
+  notify(transaction) {
+    console.log(transaction)
+    const message = (
+      <div>
+        Type: {transaction.event}<br/> 
+        From: {transaction.address}<br/> 
+        Value: {transaction.returnValues.value/1000000000000000000}
+        <br/> Link https://etherscan.io/tx/{transaction.transactionHash} 
+      </div>
+    )
     toast(message)
   }
-  
+
   async getContractAbi(contractAddress) {
     const etherscanURL = `https://api.etherscan.io/api?module=contract&action=getabi&address=${contractAddress}&apikey=${process.env.REACT_APP_ETHERSCAN_API_KEY}`
     const response = await axios.get(etherscanURL)
@@ -23,12 +30,11 @@ class Dashboard extends Component {
 
   async processTransactions() {
     console.log("Processing...")
-    toast("HI")
     const contractAddress = '0xd26114cd6EE289AccF82350c8d8487fedB8A0C07'
     const contractAbi = await this.getContractAbi(contractAddress)
 
     const contract = new web3.eth.Contract(contractAbi, contractAddress)
-    contract.events.Transfer((err, event) => {this.notify(event)})
+    contract.events.allEvents((err, event) => {this.notify(event)})
   }
 
   render() {
