@@ -3,11 +3,17 @@ import AddTokenModal from '../dashboard/AddToken';
 import { Button  } from 'semantic-ui-react'
 import web3 from '../web3';
 import axios from 'axios';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 class Dashboard extends Component {
   componentDidMount() {
   }
 
+  notify(event) {
+    console.log(event)
+    const message = `TRANSFER from ${event.address}. https://etherscan.io/tx/${event.transactionHash}`
+    toast(message)
+  }
   async getContractAbi(contractAddress) {
     const etherscanURL = `https://api.etherscan.io/api?module=contract&action=getabi&address=${contractAddress}&apikey=${process.env.REACT_APP_ETHERSCAN_API_KEY}`
     const response = await axios.get(etherscanURL)
@@ -15,11 +21,13 @@ class Dashboard extends Component {
   }
 
   async processTransactions() {
-    const contractAddress = '0x2129fF6000b95A973236020BCd2b2006B0D8E019'
+    console.log("Processing...")
+    toast("HI")
+    const contractAddress = '0xd26114cd6EE289AccF82350c8d8487fedB8A0C07'
     const contractAbi = await this.getContractAbi(contractAddress)
 
     const contract = new web3.eth.Contract(contractAbi, contractAddress)
-    contract.events.Transfer((err, event) => {console.log(event)})
+    contract.events.Transfer((err, event) => {this.notify(event)})
   }
 
   render() {
@@ -30,6 +38,7 @@ class Dashboard extends Component {
             <Button onClick={this.processTransactions.bind(this)}>Process Transactions</Button>
 
           </div> 
+          <ToastContainer />
       </Fragment>
     )
   }
