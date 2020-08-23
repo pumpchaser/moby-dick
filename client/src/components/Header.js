@@ -50,7 +50,7 @@ class Header extends Component {
           <Menu secondary size="large">
             <Menu.Item>
               <a href="/">
-                <Logo>MobyDick</Logo>
+                <Logo>Spear</Logo>
               </a>
             </Menu.Item>
             <Menu.Menu position='right'>
