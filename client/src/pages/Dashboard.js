@@ -7,28 +7,44 @@ class Dashboard extends Component {
   componentDidMount() {
   }
 
-  async processTransactions() {
-    const latestBlockNumber = await web3.eth.getBlockNumber();
-    // console.log(latestBlockNumber)
+  // async oldprocessTransactions() {
+    // console.log(process.env.REACT_APP_ETHERSCAN_API)
+    // console.log(process.env.REACT_APP_WEBSITE_NAME)
+    // const latestBlockNumber = await web3.eth.getBlockNumber();
+    // // console.log(latestBlockNumber)
 
-    const block = await web3.eth.getBlock(latestBlockNumber)
-    // console.log(block)
+    // const block = await web3.eth.getBlock(latestBlockNumber)
+    // // console.log(block)
 
-    const transactionHashes = block.transactions
-    // console.log(transactionHashes)
+    // const transactionHashes = block.transactions
+    // // console.log(transactionHashes)
 
-    let transactions = [] 
+    // let transactions = [] 
 
-    for (const txHash of transactionHashes) {
-      let tx = await web3.eth.getTransaction(txHash)
-      transactions.push(tx)
-      console.log(tx);
+    // for (const txHash of transactionHashes) {
+    //   let tx = await web3.eth.getTransaction(txHash)
+    //   transactions.push(tx)
+    //   console.log(tx);
 
-    }
+    // }
 
     // console.log(transactions)
 
+  // }
+
+  async processTransactions() {
+    const contractAddress = '0x2129fF6000b95A973236020BCd2b2006B0D8E019'
+    const etherscanURL = `https://api.etherscan.io/api?module=contract&action=getabi&address=${contractAddress}&apikey=${process.env.REACT_APP_ETHERSCAN_API_KEY}`
+  
+    console.log(etherscanURL)
   }
+// def init_contract(w3, address):
+//     url = f"https://api.etherscan.io/api?module=contract&action=getabi&address={address}&apikey={API_KEY}"
+//     resp = requests.get(url)
+//     json_resp = json.loads(resp.text)
+//     contract_abi = json_resp['result']
+//     my_contract = w3.eth.contract(address=address, abi=contract_abi)
+//     return my_contract
 
 
 // var myContract = new web3.eth.Contract([...], '0xde0B295669a9FD93d5F28D9Ec85E40f4cb697BAe', {
