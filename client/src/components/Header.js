@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Menu, Button } from 'semantic-ui-react';
+import { Menu, Button, Image } from 'semantic-ui-react';
 import styled from 'styled-components'
 import Web3 from 'web3';
 
@@ -8,9 +8,10 @@ const MenuWrapper = styled.div`
   border-bottom: 1px solid #e6e4e4;
 `
 const Logo = styled.p`
-  font-size:20px;
+  font-size: 20px;
   color: black;
   text-decoration: none;
+  margin-left: 5px
 `
 
 class Header extends Component {
@@ -49,6 +50,7 @@ class Header extends Component {
         <MenuWrapper>
           <Menu secondary size="large">
             <Menu.Item>
+              <Image size='mini' src='spear.png' />
               <a href="/">
                 <Logo>Spear</Logo>
               </a>
