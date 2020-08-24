@@ -20,7 +20,7 @@ class MainFeed extends Component {
         {
           this.state.events.map((event) => {
             return(
-              <Feed.Event>
+              <Feed.Event key={event.txId}>
                 <Feed.Label>
                   <Icon name='thumbs up outline' />
                 </Feed.Label>
@@ -33,7 +33,7 @@ class MainFeed extends Component {
                   </Feed.Summary>
                   <Feed.Meta>
                     <Feed.Like>
-                      {event.value} ETH
+                      {event.value} tokens
                     </Feed.Like>
                   </Feed.Meta>
                 </Feed.Content>

@@ -36,23 +36,28 @@ class Dashboard extends Component {
       <a href={txURL} target='_blank' rel='noopener noreferrer'>
         <div>
           Type: {transaction.event}<br/> 
-          From: {transaction.address}<br/> 
+          From: {transaction.returnValues.from}<br/> 
+          to: {transaction.returnValues.to}<br/> 
           Value: {transaction.returnValues.value/1000000000000000000}
         </div>
       </a>
     )
+    toast(message)
+
+    console.log(transaction)
     const newEvent = {
+
       'type': transaction.event,
-      'from': transaction.address,
+      'from': transaction.returnValues.from,
+      'to': transaction.returnValues.to,
       'value': transaction.returnValues.value/1000000000000000000,
+      'txId': transaction.id,
       'url': txURL
     }
 
     let { events } = this.state
     events.unshift(newEvent)
     this.setState({ events : events })
-
-    toast(message)
   }
 
   async getContractAbi(contractAddress) {
