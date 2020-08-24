@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import AddTokenModal from '../dashboard/AddToken';
-import { Button  } from 'semantic-ui-react'
+import EventFeed from '../dashboard/EventFeed';
+import { Container, Button, Grid  } from 'semantic-ui-react'
 import web3 from '../web3';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
@@ -19,14 +20,20 @@ class Dashboard extends Component {
     }
   }
 
+  constructor(props){
+    super(props)
+    this.state = {
+      events: []
+    }
+  }
+
   componentDidMount() {
   }
 
   notify(transaction) {
-    console.log(transaction)
     const txURL = `https://etherscan.io/tx/${transaction.transactionHash}` 
     const message = (
-      <a href={txURL} target='_blank'>
+      <a href={txURL} target='_blank' rel='noopener noreferrer'>
         <div>
           Type: {transaction.event}<br/> 
           From: {transaction.address}<br/> 
@@ -34,6 +41,17 @@ class Dashboard extends Component {
         </div>
       </a>
     )
+    const newEvent = {
+      'type': transaction.event,
+      'from': transaction.address,
+      'value': transaction.returnValues.value/1000000000000000000,
+      'url': txURL
+    }
+
+    let { events } = this.state
+    events.unshift(newEvent)
+    this.setState({ events : events })
+
     toast(message)
   }
 
@@ -56,12 +74,23 @@ class Dashboard extends Component {
   render() {
     return(
       <Fragment>
+        <Container>
           <div className="center">
             <AddTokenModal>Add Token</AddTokenModal>
             <Button onClick={this.processTransactions.bind(this)}>Process Transactions</Button>
-
+            <Grid columns={2}>
+              <Grid.Column>
+                Main Feed
+                <EventFeed events={this.state.events}/>
+              </Grid.Column>
+              <Grid.Column>
+                Side Feed
+                <EventFeed events={[]} />
+              </Grid.Column>
+            </Grid>
           </div> 
           <ToastContainer />
+        </Container>
       </Fragment>
     )
   }
