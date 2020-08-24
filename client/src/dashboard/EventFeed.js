@@ -15,8 +15,7 @@ class MainFeed extends Component {
   }
 
   renderFeed(){
-    console.log(this.state.events)
-   return (
+    return (
       <Fragment>
         {
           this.state.events.map((event) => {
@@ -27,8 +26,8 @@ class MainFeed extends Component {
                 </Feed.Label>
                 <Feed.Content>
                   <Feed.Summary>
-                    <a href={event.url} target='_blank'>
-                      <Feed.User>{event.type}</Feed.User> by {event.from.slice(0, 8)}
+                    <a href={event.url} target='_blank' rel='noopener noreferrer'>
+                      <Feed.User>{event.type}</Feed.User> by {event.from.slice(0, 20)}
                     </a>
                     <Feed.Date></Feed.Date>
                   </Feed.Summary>
@@ -43,7 +42,7 @@ class MainFeed extends Component {
           })
         }
       </Fragment>
-     );
+    );
   }
 
   render() {
@@ -51,7 +50,6 @@ class MainFeed extends Component {
       <Segment>
         <Feed>
           {this.renderFeed()}
-
         </Feed>
       </Segment>
     )
