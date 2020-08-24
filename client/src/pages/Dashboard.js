@@ -33,14 +33,12 @@ class Dashboard extends Component {
   notify(transaction) {
     const txURL = `https://etherscan.io/tx/${transaction.transactionHash}` 
     const message = (
-      <a href={txURL} target='_blank' rel='noopener noreferrer'>
-        <div>
-          Type: {transaction.event}<br/> 
-          From: {transaction.returnValues.from}<br/> 
-          to: {transaction.returnValues.to}<br/> 
-          Value: {transaction.returnValues.value/1000000000000000000}
-        </div>
-      </a>
+      <div>
+        Type: {transaction.event}<br/> 
+        From: {transaction.returnValues.from}<br/> 
+        to: {transaction.returnValues.to}<br/> 
+        Value: {transaction.returnValues.value/1000000000000000000}
+      </div>
     )
     toast(message)
 
