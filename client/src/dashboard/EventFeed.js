@@ -15,7 +15,15 @@ class MainFeed extends Component {
     'Sell': {
       'icon': 'sign out',
       'color': 'red'
-    }
+    },
+    // 'Burn': {
+    //   'icon': 'sign out',
+    //   'color': 'red'
+    // },
+    // 'Unstake': {
+    //   'icon': 'sign out',
+    //   'color': 'red'
+    // }
   }
   constructor(props){
     super(props)
@@ -33,10 +41,12 @@ class MainFeed extends Component {
       <Fragment>
         {
           this.state.events.map((event) => {
+            const eventIcon = (this.EVENT_CONFIG[event.type] && this.EVENT_CONFIG[event.type]['icon']) || 'question'
+            const iconColor = (this.EVENT_CONFIG[event.type] && this.EVENT_CONFIG[event.type]['color']) || 'black'
             return(
               <Feed.Event key={event.txId}>
                 <Feed.Label>
-                  <Icon name={`${this.EVENT_CONFIG[event.type]['icon']}`} color={`${this.EVENT_CONFIG[event.type]['color']}`} />
+                  <Icon name={`${eventIcon}`} color={`${iconColor}`} />
                 </Feed.Label>
                 <Feed.Content>
                   <Feed.Summary>

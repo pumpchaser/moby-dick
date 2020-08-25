@@ -13,6 +13,10 @@ class Dashboard extends Component {
     'RSR': {
       'contract': '0x8762db106b2c2a0bccb3a80d1ed41273552616e8',
       'uniswap': '0xeeeec06f48656e921b39e30d9a205cb2b08ea465'
+    },
+    'MYX': {
+      'contract': '0x2129fF6000b95A973236020BCd2b2006B0D8E019',
+      'uniswap': '0xe5437565cba444f33f40215afecc92e38e2d1ba9'
     }
   }
 
@@ -30,7 +34,10 @@ class Dashboard extends Component {
 
   getTransactionType(transaction){
     if (transaction.event === 'Transfer') {
-      if (transaction.returnValues.to === this.COIN_OPTIONS[this.state.currentToken]['uniswap']){
+      console.log(transaction.returnValues.to.toLowerCase())
+      console.log('vs')
+      console.log(this.COIN_OPTIONS[this.state.currentToken]['uniswap'])
+      if (transaction.returnValues.to.toLowerCase() === this.COIN_OPTIONS[this.state.currentToken]['uniswap']){
         return 'Sell'
       } else {
         return 'Buy'
@@ -52,7 +59,7 @@ class Dashboard extends Component {
     // )
     // toast(message)
 
-    console.log(transaction.event)
+    console.log('!!!', transaction.event, transaction)
     const newEvent = {
       'type': this.getTransactionType(transaction),
       'from': transaction.returnValues.from,
@@ -100,7 +107,7 @@ class Dashboard extends Component {
       <Fragment>
         {
           Object.keys(this.COIN_OPTIONS).map((tokenName) => {return(
-            <Menu.Item key={tokenName} inverted color={'blue'} onClick={() => this.setActiveToken(tokenName)} active={this.state.currentToken === tokenName}>
+            <Menu.Item key={tokenName} color={'blue'} onClick={() => this.setActiveToken(tokenName)} active={this.state.currentToken === tokenName}>
               {tokenName}
             </Menu.Item>
           )})
