@@ -5,14 +5,14 @@ import { Grid  } from 'semantic-ui-react'
 export default(props) => {
   return(
     <Fragment>
-	      <Grid>
-	      	<Grid.Row>
-		      	<Header/>
-		      </Grid.Row>
-		      <Grid.Row>
-			      {props.children}
-			    </Grid.Row>
-			  </Grid>
+      <Grid>
+      	<Grid.Row>
+	      	<Header/>
+	      </Grid.Row>
+	      <Grid.Row>
+		      {props.children}
+		  	</Grid.Row>
+		  </Grid>
     </Fragment>
   )
 };

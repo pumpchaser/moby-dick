@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import AddTokenModal from '../dashboard/AddToken';
 import EventFeed from '../dashboard/EventFeed';
-import { Container, Button, Grid  } from 'semantic-ui-react'
+import { Container, Button, Grid, Menu } from 'semantic-ui-react'
 import web3 from '../web3';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
@@ -90,25 +90,20 @@ class Dashboard extends Component {
   render() {
     return(
       <Fragment>
-        <Container>
-          <Grid columns={2} divided>
-            <Grid.Column width={2} >
-              <Button inverted color={'blue'} onClick={() => this.setActiveToken('TMPL')} active={this.state.currentToken === 'TMPL'}>TMPL</Button>
-              <Button inverted color={'blue'} onClick={() => this.setActiveToken('SLINK')} active={this.state.currentToken === 'SLINK'}>SLINK</Button>
-              <Button inverted color={'blue'} onClick={() => this.setActiveToken('OMG')} active={this.state.currentToken === 'OMG'}>OMG</Button>
-
+        <Container fluid>
+          <Grid >
+            <Grid.Column width={4}>
+              <Menu vertical>
+                <Menu.Item inverted color={'blue'} onClick={() => this.setActiveToken('TMPL')} active={this.state.currentToken === 'TMPL'}>TMPL</Menu.Item>
+                <Menu.Item inverted color={'blue'} onClick={() => this.setActiveToken('SLINK')} active={this.state.currentToken === 'SLINK'}>SLINK</Menu.Item>
+                <Menu.Item inverted color={'blue'} onClick={() => this.setActiveToken('OMG')} active={this.state.currentToken === 'OMG'}>OMG</Menu.Item>
+              </Menu>
             </Grid.Column>
-            <Grid.Column width={14}>
-              <div className="center">
-                <AddTokenModal>Add Token</AddTokenModal>
-                {/*<Button onClick={this.processTransactions.bind(this)}>Process Transactions</Button>*/}
-                <Grid columns={1}>
-                  <Grid.Column>
-                    Main Feed
-                    <EventFeed events={this.state.events}/>
-                  </Grid.Column>
-                </Grid>
-              </div> 
+            <Grid.Column width={11}>
+              {/*<AddTokenModal>Add Token</AddTokenModal>*/}
+              {/*<Button onClick={this.processTransactions.bind(this)}>Process Transactions</Button>*/}
+              Main Feed
+              <EventFeed events={this.state.events}/>
             </Grid.Column>
           </Grid>
           <ToastContainer />
