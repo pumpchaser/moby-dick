@@ -15,6 +15,9 @@ class Dashboard extends Component {
     },
     'SLINK': {
       'contract': '0xbbc455cb4f1b9e4bfc4b73970d360c8f032efee6'
+    },
+    'OMG': {
+      'contract': '0xd26114cd6EE289AccF82350c8d8487fedB8A0C07'
     }
   }
 
@@ -92,11 +95,13 @@ class Dashboard extends Component {
             <Grid.Column width={2} >
               <Button inverted color={'blue'} onClick={() => this.setActiveToken('TMPL')} active={this.state.currentToken === 'TMPL'}>TMPL</Button>
               <Button inverted color={'blue'} onClick={() => this.setActiveToken('SLINK')} active={this.state.currentToken === 'SLINK'}>SLINK</Button>
+              <Button inverted color={'blue'} onClick={() => this.setActiveToken('OMG')} active={this.state.currentToken === 'OMG'}>OMG</Button>
+
             </Grid.Column>
             <Grid.Column width={14}>
               <div className="center">
                 <AddTokenModal>Add Token</AddTokenModal>
-                <Button onClick={this.processTransactions.bind(this)}>Process Transactions</Button>
+                {/*<Button onClick={this.processTransactions.bind(this)}>Process Transactions</Button>*/}
                 <Grid columns={1}>
                   <Grid.Column>
                     Main Feed
