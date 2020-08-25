@@ -1,11 +1,13 @@
 import React, { Component, Fragment } from 'react';
-import AddTokenModal from '../dashboard/AddToken';
-import EventFeed from '../dashboard/EventFeed';
-import { Container, Button, Grid, Menu } from 'semantic-ui-react'
-import web3 from '../web3';
-import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import { connect } from 'react-redux'
 import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
+import axios from 'axios';
+
+import web3 from '../web3';
+import EventFeed from '../dashboard/EventFeed';
+import { Container, Grid, Menu } from 'semantic-ui-react'
+import { fetchTopHodlers } from '../actions/action_hodlers'
 
 
 class Dashboard extends Component {
@@ -24,7 +26,7 @@ class Dashboard extends Component {
   constructor(props){
     super(props)
     this.state = {
-      currentToken: '', 
+      currentToken: '',
       events: []
     }
   }
@@ -33,12 +35,12 @@ class Dashboard extends Component {
   }
 
   notify(transaction) {
-    const txURL = `https://etherscan.io/tx/${transaction.transactionHash}` 
+    const txURL = `https://etherscan.io/tx/${transaction.transactionHash}`
     // const message = (
     //   <div>
-    //     Type: {transaction.event}<br/> 
-    //     From: {transaction.returnValues.from}<br/> 
-    //     to: {transaction.returnValues.to}<br/> 
+    //     Type: {transaction.event}<br/>
+    //     From: {transaction.returnValues.from}<br/>
+    //     to: {transaction.returnValues.to}<br/>
     //     Value: {transaction.returnValues.value/1000000000000000000}
     //   </div>
     // )
@@ -76,6 +78,8 @@ class Dashboard extends Component {
   }
 
   async setActiveToken(newToken) {
+    this.props.fetchTopHodlers(newToken)
+
     const {currentToken} = this.state
     if (currentToken === newToken) {
       return
@@ -85,6 +89,15 @@ class Dashboard extends Component {
       events: []
     })
     await this.processTransactions()
+  }
+
+  renderTopHodlers() {
+    return (
+      this.props.topHodlers.map(hodler => {
+        return <p>{hodler['address']}</p>
+      })
+    )
+
   }
 
   render() {
@@ -108,10 +121,17 @@ class Dashboard extends Component {
           </Grid>
           <ToastContainer />
         </Container>
+        <Container>
+          <div>Top Hodlers: {this.renderTopHodlers()}</div>
+        </Container>
       </Fragment>
     )
   }
 }
 
-export default Dashboard;
+function mapStateToProps(state) {
+  return { topHodlers: state.topHodlers }
+}
+
+export default connect(mapStateToProps, {fetchTopHodlers})(Dashboard);
 
