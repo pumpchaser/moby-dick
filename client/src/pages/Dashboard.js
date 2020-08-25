@@ -10,14 +10,9 @@ import 'react-toastify/dist/ReactToastify.css';
 
 class Dashboard extends Component {
   COIN_OPTIONS = {
-    'TMPL': {
-      'contract': '0x52132a43d7cae69b23abe77b226fa1a5bc66b839'
-    },
-    'SLINK': {
-      'contract': '0x10bae51262490b4f4af41e12ed52a0e744c1137a'
-    },
-    'USDT': {
-      'contract': '0xc00e94cb662c3520282e6f5717214004a7f26888'
+    'RSR': {
+      'contract': '0x8762db106b2c2a0bccb3a80d1ed41273552616e8',
+      'uniswap': '0xeeeec06f48656e921b39e30d9a205cb2b08ea465'
     }
   }
 
@@ -34,9 +29,8 @@ class Dashboard extends Component {
   }
 
   getTransactionType(transaction){
-    console.log(transaction.event, '!!!')
     if (transaction.event === 'Transfer') {
-      if (transaction.returnValues.to === this.COIN_OPTIONS[this.state.currentToken]['contract']){
+      if (transaction.returnValues.to === this.COIN_OPTIONS[this.state.currentToken]['uniswap']){
         return 'Sell'
       } else {
         return 'Buy'
@@ -101,6 +95,19 @@ class Dashboard extends Component {
     await this.processTransactions()
   }
 
+  renderMenuOptions() {
+    return(
+      <Fragment>
+        {
+          Object.keys(this.COIN_OPTIONS).map((tokenName) => {return(
+            <Menu.Item key={tokenName} inverted color={'blue'} onClick={() => this.setActiveToken(tokenName)} active={this.state.currentToken === tokenName}>
+              {tokenName}
+            </Menu.Item>
+          )})
+        }
+      </Fragment>
+    )
+  }
   render() {
     return(
       <Fragment>
@@ -108,9 +115,7 @@ class Dashboard extends Component {
           <Grid >
             <Grid.Column width={4}>
               <Menu vertical>
-                <Menu.Item inverted color={'blue'} onClick={() => this.setActiveToken('TMPL')} active={this.state.currentToken === 'TMPL'}>TMPL</Menu.Item>
-                <Menu.Item inverted color={'blue'} onClick={() => this.setActiveToken('SLINK')} active={this.state.currentToken === 'SLINK'}>SLINK</Menu.Item>
-                <Menu.Item inverted color={'blue'} onClick={() => this.setActiveToken('USDT')} active={this.state.currentToken === 'USDT'}>USDT</Menu.Item>
+                {this.renderMenuOptions()}
               </Menu>
             </Grid.Column>
             <Grid.Column width={11}>

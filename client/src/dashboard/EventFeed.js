@@ -4,7 +4,7 @@ import { Feed, Icon, Segment} from 'semantic-ui-react'
 
 class MainFeed extends Component {
   EVENT_CONFIG = {
-    'Approve': {
+    'Approval': {
       'icon': 'warning',
       'color': 'yellow'
     },
