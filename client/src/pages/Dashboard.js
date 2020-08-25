@@ -8,8 +8,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-
-
 class Dashboard extends Component {
   COIN_OPTIONS = {
     'TMPL': {
@@ -23,6 +21,7 @@ class Dashboard extends Component {
   constructor(props){
     super(props)
     this.state = {
+      currentToken: 'TMPL', 
       events: []
     }
   }
@@ -32,19 +31,18 @@ class Dashboard extends Component {
 
   notify(transaction) {
     const txURL = `https://etherscan.io/tx/${transaction.transactionHash}` 
-    const message = (
-      <div>
-        Type: {transaction.event}<br/> 
-        From: {transaction.returnValues.from}<br/> 
-        to: {transaction.returnValues.to}<br/> 
-        Value: {transaction.returnValues.value/1000000000000000000}
-      </div>
-    )
-    toast(message)
+    // const message = (
+    //   <div>
+    //     Type: {transaction.event}<br/> 
+    //     From: {transaction.returnValues.from}<br/> 
+    //     to: {transaction.returnValues.to}<br/> 
+    //     Value: {transaction.returnValues.value/1000000000000000000}
+    //   </div>
+    // )
+    // toast(message)
 
     console.log(transaction)
     const newEvent = {
-
       'type': transaction.event,
       'from': transaction.returnValues.from,
       'to': transaction.returnValues.to,
@@ -78,20 +76,24 @@ class Dashboard extends Component {
     return(
       <Fragment>
         <Container>
-          <div className="center">
-            <AddTokenModal>Add Token</AddTokenModal>
-            <Button onClick={this.processTransactions.bind(this)}>Process Transactions</Button>
-            <Grid columns={2}>
-              <Grid.Column>
-                Main Feed
-                <EventFeed events={this.state.events}/>
-              </Grid.Column>
-              <Grid.Column>
-                Side Feed
-                <EventFeed events={[]} />
-              </Grid.Column>
-            </Grid>
-          </div> 
+          <Grid columns={2} divided>
+            <Grid.Column width={2} color={'olive'}>
+              SLINK
+              TAMPL
+            </Grid.Column>
+            <Grid.Column width={14}>
+              <div className="center">
+                <AddTokenModal>Add Token</AddTokenModal>
+                <Button onClick={this.processTransactions.bind(this)}>Process Transactions</Button>
+                <Grid columns={1}>
+                  <Grid.Column>
+                    Main Feed
+                    <EventFeed events={this.state.events}/>
+                  </Grid.Column>
+                </Grid>
+              </div> 
+            </Grid.Column>
+          </Grid>
           <ToastContainer />
         </Container>
       </Fragment>

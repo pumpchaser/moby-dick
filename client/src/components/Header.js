@@ -4,9 +4,6 @@ import styled from 'styled-components'
 import Web3 from 'web3';
 
 
-const MenuWrapper = styled.div`
-  border-bottom: 1px solid #e6e4e4;
-`
 const Logo = styled.p`
   font-size: 20px;
   color: black;
@@ -15,9 +12,6 @@ const Logo = styled.p`
 `
 
 class Header extends Component {
-  // login() {
-    
-  // }
   async login() {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum)
@@ -30,7 +24,6 @@ class Header extends Component {
       window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
     }
   } 
-
 
   renderCurrentSession(){
     if(window.ethereum.selectedAddress){
@@ -47,20 +40,17 @@ class Header extends Component {
   render() {
     return(
       <div>
-        <MenuWrapper>
-          <Menu secondary size="large">
-            <Menu.Item>
-              <Image size='mini' src='spear.png' />
-              <a href="/">
-                <Logo>Spear</Logo>
-              </a>
-            </Menu.Item>
-            <Menu.Menu position='right'>
-              {this.renderCurrentSession()}
-
-            </Menu.Menu>
-          </Menu>
-        </MenuWrapper>
+        <Menu secondary size="large">
+          <Menu.Item>
+            <Image size='mini' src='spear.png' />
+            <a href="/">
+              <Logo>Spear</Logo>
+            </a>
+          </Menu.Item>
+          <Menu.Menu position='right'>
+            {this.renderCurrentSession()}
+          </Menu.Menu>
+        </Menu>
       </div>
     )
   }
