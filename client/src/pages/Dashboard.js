@@ -37,7 +37,7 @@ class Dashboard extends Component {
       console.log(transaction.returnValues.to.toLowerCase())
       console.log('vs')
       console.log(this.COIN_OPTIONS[this.state.currentToken]['uniswap'])
-      if (transaction.returnValues.to.toLowerCase() === this.COIN_OPTIONS[this.state.currentToken]['uniswap']){
+      if (transaction.returnValues.to.toLowerCase() === this.COIN_OPTIONS[this.state.currentToken]['uniswap'].toLowerCase()){
         return 'Sell'
       } else {
         return 'Buy'
@@ -62,7 +62,7 @@ class Dashboard extends Component {
     console.log('!!!', transaction.event, transaction)
     const newEvent = {
       'type': this.getTransactionType(transaction),
-      'from': transaction.returnValues.from,
+      'from': transaction.returnValues.from || transaction.returnValues.owner,
       'to': transaction.returnValues.to,
       'value': transaction.returnValues.value/1000000000000000000,
       'txId': transaction.id,
