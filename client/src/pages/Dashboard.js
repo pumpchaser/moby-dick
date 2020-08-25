@@ -16,8 +16,8 @@ class Dashboard extends Component {
     'SLINK': {
       'contract': '0x10bae51262490b4f4af41e12ed52a0e744c1137a'
     },
-    'OMG': {
-      'contract': '0xd26114cd6EE289AccF82350c8d8487fedB8A0C07'
+    'USDT': {
+      'contract': '0xc00e94cb662c3520282e6f5717214004a7f26888'
     }
   }
 
@@ -27,9 +27,23 @@ class Dashboard extends Component {
       currentToken: '', 
       events: []
     }
+    this.getTransactionType.bind(this)
   }
 
   componentDidMount() {
+  }
+
+  getTransactionType(transaction){
+    console.log(transaction.event, '!!!')
+    if (transaction.event === 'Transfer') {
+      if (transaction.returnValues.to === this.COIN_OPTIONS[this.state.currentToken]['contract']){
+        return 'Sell'
+      } else {
+        return 'Buy'
+      }
+    }
+    return transaction.event
+
   }
 
   notify(transaction) {
@@ -44,14 +58,14 @@ class Dashboard extends Component {
     // )
     // toast(message)
 
-    console.log(transaction)
+    console.log(transaction.event)
     const newEvent = {
-      'type': transaction.event,
+      'type': this.getTransactionType(transaction),
       'from': transaction.returnValues.from,
       'to': transaction.returnValues.to,
       'value': transaction.returnValues.value/1000000000000000000,
       'txId': transaction.id,
-      'url': txURL
+      'url': txURL,
     }
 
     let { events } = this.state
@@ -96,7 +110,7 @@ class Dashboard extends Component {
               <Menu vertical>
                 <Menu.Item inverted color={'blue'} onClick={() => this.setActiveToken('TMPL')} active={this.state.currentToken === 'TMPL'}>TMPL</Menu.Item>
                 <Menu.Item inverted color={'blue'} onClick={() => this.setActiveToken('SLINK')} active={this.state.currentToken === 'SLINK'}>SLINK</Menu.Item>
-                <Menu.Item inverted color={'blue'} onClick={() => this.setActiveToken('OMG')} active={this.state.currentToken === 'OMG'}>OMG</Menu.Item>
+                <Menu.Item inverted color={'blue'} onClick={() => this.setActiveToken('USDT')} active={this.state.currentToken === 'USDT'}>USDT</Menu.Item>
               </Menu>
             </Grid.Column>
             <Grid.Column width={11}>

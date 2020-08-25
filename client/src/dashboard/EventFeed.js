@@ -3,6 +3,20 @@ import React, { Component, Fragment } from 'react';
 import { Feed, Icon, Segment} from 'semantic-ui-react'
 
 class MainFeed extends Component {
+  EVENT_CONFIG = {
+    'Approve': {
+      'icon': 'warning',
+      'color': 'yellow'
+    },
+    'Buy': {
+      'icon': 'sign in',
+      'color': 'green'
+    },
+    'Sell': {
+      'icon': 'sign out',
+      'color': 'red'
+    }
+  }
   constructor(props){
     super(props)
     this.state = {
@@ -22,7 +36,7 @@ class MainFeed extends Component {
             return(
               <Feed.Event key={event.txId}>
                 <Feed.Label>
-                  <Icon name='thumbs up outline' />
+                  <Icon name={`${this.EVENT_CONFIG[event.type]['icon']}`} color={`${this.EVENT_CONFIG[event.type]['color']}`} />
                 </Feed.Label>
                 <Feed.Content>
                   <Feed.Summary>
