@@ -13,15 +13,15 @@ class Dashboard extends Component {
     'TMPL': {
       'contract': '0x52132a43d7cae69b23abe77b226fa1a5bc66b839'
     },
-    'OMG': {
-      'contract': '0xd26114cd6EE289AccF82350c8d8487fedB8A0C07'
+    'SLINK': {
+      'contract': '0xbbc455cb4f1b9e4bfc4b73970d360c8f032efee6'
     }
   }
 
   constructor(props){
     super(props)
     this.state = {
-      currentToken: 'TMPL', 
+      currentToken: '', 
       events: []
     }
   }
@@ -63,13 +63,25 @@ class Dashboard extends Component {
   }
 
   async processTransactions() {
-    console.log("Processing...")
-    const coin = 'OMG'
-    const contractAddress = this.COIN_OPTIONS[coin]['contract']
+    console.log("Processing...", this.state.currentToken)
+
+    const contractAddress = this.COIN_OPTIONS[this.state.currentToken]['contract']
     const contractAbi = await this.getContractAbi(contractAddress)
 
     const contract = new web3.eth.Contract(contractAbi, contractAddress)
     contract.events.allEvents((err, event) => {this.notify(event)})
+  }
+
+  async setActiveToken(newToken) {
+    const {currentToken} = this.state
+    if (currentToken === newToken) {
+      return
+    }
+    await this.setState({
+      currentToken: newToken,
+      events: []
+    })
+    await this.processTransactions()
   }
 
   render() {
@@ -77,9 +89,9 @@ class Dashboard extends Component {
       <Fragment>
         <Container>
           <Grid columns={2} divided>
-            <Grid.Column width={2} color={'olive'}>
-              SLINK
-              TAMPL
+            <Grid.Column width={2} >
+              <Button inverted color={'blue'} onClick={() => this.setActiveToken('TMPL')} active={this.state.currentToken === 'TMPL'}>TMPL</Button>
+              <Button inverted color={'blue'} onClick={() => this.setActiveToken('SLINK')} active={this.state.currentToken === 'SLINK'}>SLINK</Button>
             </Grid.Column>
             <Grid.Column width={14}>
               <div className="center">

@@ -27,7 +27,7 @@ class MainFeed extends Component {
                 <Feed.Content>
                   <Feed.Summary>
                     <a href={event.url} target='_blank' rel='noopener noreferrer'>
-                      <Feed.User>{event.type}</Feed.User> by {event.from.slice(0, 20)}
+                      <Feed.User>{event.type}</Feed.User> by {event.from}
                     </a>
                     <Feed.Date></Feed.Date>
                   </Feed.Summary>
