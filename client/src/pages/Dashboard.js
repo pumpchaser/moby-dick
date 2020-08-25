@@ -14,7 +14,7 @@ class Dashboard extends Component {
       'contract': '0x52132a43d7cae69b23abe77b226fa1a5bc66b839'
     },
     'SLINK': {
-      'contract': '0xbbc455cb4f1b9e4bfc4b73970d360c8f032efee6'
+      'contract': '0x10bae51262490b4f4af41e12ed52a0e744c1137a'
     },
     'OMG': {
       'contract': '0xd26114cd6EE289AccF82350c8d8487fedB8A0C07'
