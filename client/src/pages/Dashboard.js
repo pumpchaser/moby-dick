@@ -12,14 +12,18 @@ import { fetchTopHodlers } from '../actions/action_hodlers'
 
 class Dashboard extends Component {
   COIN_OPTIONS = {
-    'TMPL': {
-      'contract': '0x52132a43d7cae69b23abe77b226fa1a5bc66b839'
+    'RSR': {
+      'contract': '0x8762db106b2c2a0bccb3a80d1ed41273552616e8',
+      'uniswap': '0xeeeec06f48656e921b39e30d9a205cb2b08ea465'
+    },
+    'MYX': {
+      'contract': '0x2129fF6000b95A973236020BCd2b2006B0D8E019',
+      'uniswap': '0xe5437565cba444f33f40215afecc92e38e2d1ba9'
     },
     'SLINK': {
-      'contract': '0x10bae51262490b4f4af41e12ed52a0e744c1137a'
-    },
-    'OMG': {
-      'contract': '0xd26114cd6EE289AccF82350c8d8487fedB8A0C07'
+      'contract': '0x10bae51262490b4f4af41e12ed52a0e744c1137a',
+      'uniswap': '0xe2f021411a15f677100a79f1bf6afd89d00c778b'
+
     }
   }
 
@@ -29,9 +33,25 @@ class Dashboard extends Component {
       currentToken: '',
       events: []
     }
+    this.getTransactionType.bind(this)
   }
 
   componentDidMount() {
+  }
+
+  getTransactionType(transaction){
+    if (transaction.event === 'Transfer') {
+      console.log(transaction.returnValues.to.toLowerCase())
+      console.log('vs')
+      console.log(this.COIN_OPTIONS[this.state.currentToken]['uniswap'])
+      if (transaction.returnValues.to.toLowerCase() === this.COIN_OPTIONS[this.state.currentToken]['uniswap'].toLowerCase()){
+        return 'Sell'
+      } else {
+        return 'Buy'
+      }
+    }
+    return transaction.event
+
   }
 
   notify(transaction) {
@@ -46,14 +66,14 @@ class Dashboard extends Component {
     // )
     // toast(message)
 
-    console.log(transaction)
+    console.log('!!!', transaction.event, transaction)
     const newEvent = {
-      'type': transaction.event,
-      'from': transaction.returnValues.from,
+      'type': this.getTransactionType(transaction),
+      'from': transaction.returnValues.from || transaction.returnValues.owner,
       'to': transaction.returnValues.to,
       'value': transaction.returnValues.value/1000000000000000000,
       'txId': transaction.id,
-      'url': txURL
+      'url': txURL,
     }
 
     let { events } = this.state
@@ -99,6 +119,19 @@ class Dashboard extends Component {
     )
 
   }
+  renderMenuOptions() {
+    return(
+      <Fragment>
+        {
+          Object.keys(this.COIN_OPTIONS).map((tokenName) => {return(
+            <Menu.Item key={tokenName} color={'blue'} onClick={() => this.setActiveToken(tokenName)} active={this.state.currentToken === tokenName}>
+              {tokenName}
+            </Menu.Item>
+          )})
+        }
+      </Fragment>
+    )
+  }
 
   render() {
     return(
@@ -107,9 +140,7 @@ class Dashboard extends Component {
           <Grid >
             <Grid.Column width={4}>
               <Menu vertical>
-                <Menu.Item inverted color={'blue'} onClick={() => this.setActiveToken('TMPL')} active={this.state.currentToken === 'TMPL'}>TMPL</Menu.Item>
-                <Menu.Item inverted color={'blue'} onClick={() => this.setActiveToken('SLINK')} active={this.state.currentToken === 'SLINK'}>SLINK</Menu.Item>
-                <Menu.Item inverted color={'blue'} onClick={() => this.setActiveToken('OMG')} active={this.state.currentToken === 'OMG'}>OMG</Menu.Item>
+                {this.renderMenuOptions()}
               </Menu>
             </Grid.Column>
             <Grid.Column width={11}>

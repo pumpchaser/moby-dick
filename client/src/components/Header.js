@@ -26,7 +26,7 @@ class Header extends Component {
   } 
 
   renderCurrentSession(){
-    if(window.ethereum.selectedAddress){
+    if(window.ethereum && window.ethereum.selectedAddress){
       return(
         null
       )
