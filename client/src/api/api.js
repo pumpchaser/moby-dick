@@ -1,12 +1,10 @@
 import axios from 'axios'
 
-export const ROOT_URL = "https://mobydick-server.herokuapp.com"
-
 // Token URL
-export const TOKENS_URL = `{ROOT_URL}/tokens`
+export const TOKENS_URL = `{process.env.REACT_APP_BACKEND_URI}/tokens`
 
 // Hodlers URL
-export const TOP_HODLERS_URL = `${ROOT_URL}/hodlers`
+export const TOP_HODLERS_URL = `${process.env.REACT_APP_BACKEND_URI}/hodlers`
 
 
 export const get = (url, config = {}) => axios.get(url, {
