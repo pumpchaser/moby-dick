@@ -8,6 +8,7 @@ import web3 from '../web3';
 import EventFeed from '../dashboard/EventFeed';
 import { Container, Grid, Menu } from 'semantic-ui-react'
 import { fetchTopHodlers } from '../actions/action_hodlers'
+import { processEvents } from '../actions/action_events'
 
 
 class Dashboard extends Component {
@@ -90,9 +91,7 @@ class Dashboard extends Component {
   }
 
   async setActiveToken(newToken) {
-    this.props.fetchTopHodlers(newToken)
-
-    const {currentToken} = this.state
+    const { currentToken } = this.state
     if (currentToken === newToken) {
       return
     }
@@ -100,7 +99,9 @@ class Dashboard extends Component {
       currentToken: newToken,
       events: []
     })
-    await this.processTransactions()
+
+    this.props.fetchTopHodlers(newToken)
+    await this.props.processEvents(newToken)
   }
 
   renderTopHodlers() {
@@ -153,8 +154,8 @@ class Dashboard extends Component {
 }
 
 function mapStateToProps(state) {
-  return { topHodlers: state.topHodlers }
+  return { topHodlers: state.topHodlers, processEvents: state.processEvents}
 }
 
-export default connect(mapStateToProps, {fetchTopHodlers})(Dashboard);
+export default connect(mapStateToProps, {fetchTopHodlers, processEvents})(Dashboard);
 
