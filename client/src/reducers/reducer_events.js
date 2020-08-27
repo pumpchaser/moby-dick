@@ -1,9 +1,11 @@
-import { NEW_EVENT } from '../actions/action_events'
+import { NEW_EVENT, CLEAR_EVENTS } from '../actions/action_events'
 
 
 
 export function eventsReducer(state = [], action) {
   switch (action.type) {
+    case CLEAR_EVENTS:
+      return []
     case NEW_EVENT:
       let existingEvents = state
     	existingEvents.unshift(action.payload)

@@ -2,6 +2,7 @@ import Api from '../api/api'
 import web3 from '../web3';
 
 export const NEW_EVENT = 'NEW_EVENT'
+export const CLEAR_EVENTS = 'CLEAR_EVENTS'
 
 
 async function getContractAbi(contractAddress) {
@@ -12,7 +13,7 @@ async function getContractAbi(contractAddress) {
 
 export function processEvents(newCoin) {
 	return async dispatch => {
-		
+		dispatch({ type: CLEAR_EVENTS })
 		const contractAddress = newCoin.contract_address
 		const contractAbi = await getContractAbi(contractAddress)
 
