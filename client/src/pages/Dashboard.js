@@ -6,7 +6,7 @@ import axios from 'axios';
 
 import web3 from '../web3';
 import EventFeed from '../dashboard/EventFeed';
-import { Container, Grid, Menu } from 'semantic-ui-react'
+import { Container, Grid, Menu, Feed } from 'semantic-ui-react'
 import { fetchTopHodlers } from '../actions/action_hodlers'
 import { processEvents } from '../actions/action_events'
 import { COIN_CONFIG } from '../coin_config'
@@ -40,7 +40,7 @@ class Dashboard extends Component {
   renderTopHodlers() {
     return (
       this.props.topHodlers.map(hodler => {
-        return <p>{hodler['address']}</p>
+        return <Feed.Event key={hodler['address']}>{hodler['address']}</Feed.Event>
       })
     )
 
@@ -70,16 +70,20 @@ class Dashboard extends Component {
               </Menu>
             </Grid.Column>
             <Grid.Column width={11}>
-              {/*<AddTokenModal>Add Token</AddTokenModal>*/}
-              {/*<Button onClick={this.processTransactions.bind(this)}>Process Transactions</Button>*/}
-              Main Feed
-              <EventFeed events={this.props.events}/>
+              <Grid.Row>
+                Main Feed
+                <EventFeed 
+                  events={this.props.events} 
+                  currentToken={this.state.currentToken} 
+                  topHodlers={this.props.topHodlers}/>
+              </Grid.Row>
+              <Grid.Row>
+                Top Hodlers: 
+                <Feed>{this.renderTopHodlers()}</Feed>
+              </Grid.Row>
             </Grid.Column>
           </Grid>
           <ToastContainer />
-        </Container>
-        <Container>
-          <div>Top Hodlers: {this.renderTopHodlers()}</div>
         </Container>
       </Fragment>
     )
