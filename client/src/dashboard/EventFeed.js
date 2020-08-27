@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Feed, Icon, Segment} from 'semantic-ui-react'
+import { Table, Icon, Segment} from 'semantic-ui-react'
 
 
 class EventFeed extends Component {
@@ -49,13 +49,15 @@ class EventFeed extends Component {
   }
 
   processTransaction(transaction) {
+    const fromAddress = transaction.returnValues.from || transaction.returnValues.owner
     return {
       'type': this.getTransactionType(transaction, this.state.currentCoin),
-      'from': transaction.returnValues.from || transaction.returnValues.owner,
+      'from': fromAddress,
       'to': transaction.returnValues.to,
       'value': transaction.returnValues.value/(10**this.state.currentCoin.decimal),
       'txId': transaction.id,
       'url': `https://etherscan.io/tx/${transaction.transactionHash}`,
+      'fromUrl': fromAddress ? `https://etherscan.io/address/${fromAddress}` : '',
     }   
   }
 
@@ -68,24 +70,27 @@ class EventFeed extends Component {
             const isTopHodler = this.props.topHodlers.map(h => h.address).includes(transaction.from)
             const eventIcon = (this.EVENT_CONFIG[transaction.type] && this.EVENT_CONFIG[transaction.type]['icon']) || 'question'
             const iconColor = (this.EVENT_CONFIG[transaction.type] && this.EVENT_CONFIG[transaction.type]['color']) || 'black'
-            return(
-              <Feed.Event key={transaction.txId}>
-                <Feed.Label>
-                  <Icon name={`${eventIcon}`} color={`${iconColor}`} />
-                </Feed.Label>
-                <Feed.Content>
-                  <Feed.Summary>
-                    <Feed.User href={transaction.url} target='_blank'>{transaction.type} by {transaction.from}</Feed.User>
-                    <Feed.Date>{isTopHodler ? `Hodler #${this.props.topHodlers.findIndex(transaction.from)}` : ''}</Feed.Date>
-                  </Feed.Summary>
-                  <Feed.Meta>
-                    <Feed.Like>
-                      {transaction.value} {this.state.currentCoin.name}
-                    </Feed.Like>
-                  </Feed.Meta>
-                </Feed.Content>
-              </Feed.Event>
-           )
+
+          return(
+            <Table.Row key={transaction.txId}>
+              <Table.Cell>
+                <Icon name={eventIcon} color={iconColor}/>
+              </Table.Cell>
+              <Table.Cell>
+                <a href={transaction.url} target='_blank'>{transaction.type}</a>
+              </Table.Cell>
+              <Table.Cell>
+                <a href={transaction.fromUrl ? transaction.fromUrl : ''} target='_blank'>{transaction.from}</a>
+              </Table.Cell>
+              <Table.Cell>
+                {transaction.value} {this.state.currentCoin.name}
+              </Table.Cell>
+              <Table.Cell>
+                {isTopHodler ? `Hodler #${this.props.topHodlers.findIndex(transaction.from)}` : ''}
+              </Table.Cell>
+            </Table.Row>
+          )            
+
           })
         }
       </Fragment>
@@ -94,11 +99,18 @@ class EventFeed extends Component {
 
   render() {
     return(
-      <Segment>
-        <Feed>
-          {this.renderFeed()}
-        </Feed>
-      </Segment>
+      <Table celled padded size={'small'} compact={true}>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell singleLine></Table.HeaderCell>
+            <Table.HeaderCell singleLine>Type</Table.HeaderCell>
+            <Table.HeaderCell singleLine>Address</Table.HeaderCell>
+            <Table.HeaderCell singleLine>Value</Table.HeaderCell>
+            <Table.HeaderCell singleLine>Hodler Rank</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header> 
+        {this.renderFeed()}
+      </Table>
     )
   }
 }

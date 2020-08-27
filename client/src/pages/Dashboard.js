@@ -74,6 +74,7 @@ class Dashboard extends Component {
                   currentCoin={this.state.currentCoin} 
                   topHodlers={this.props.topHodlers}/>
               </Grid.Row>
+              <br /><br />
               <Grid.Row>
                 Top Hodlers: 
                 <HodlerTable
