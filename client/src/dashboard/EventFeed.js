@@ -16,14 +16,14 @@ class EventFeed extends Component {
       'icon': 'sign out',
       'color': 'red'
     },
-    // 'Burn': {
-    //   'icon': 'sign out',
-    //   'color': 'red'
-    // },
-    // 'Unstake': {
-    //   'icon': 'sign out',
-    //   'color': 'red'
-    // }
+    'Burn': {
+      'icon': 'fire',
+      'color': 'black'
+    },
+    'Unstake': {
+      'icon': 'dollar sign',
+      'color': 'red'
+    }
   }
   constructor(props){
     super(props)
