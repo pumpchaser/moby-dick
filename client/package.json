@@ -21,13 +21,28 @@
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^1.2.0",
     "styled-components": "^5.1.1",
-    "web3": "^1.2.11"
+    "web3": "^1.2.11",
+    "@types/react": "16.9.23",
+    "chart.js": "2.9.3",
+    "classnames": "2.2.6",
+    "history": "4.10.1",
+    "node-sass": "4.13.1",
+    "perfect-scrollbar": "1.5.0",
+    "prop-types": "15.7.2",
+    "react-chartjs-2": "2.9.0",
+    "react-google-maps": "9.4.5",
+    "react-notification-alert": "0.0.12",
+    "reactstrap": "8.4.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start",
+    "compile-scss": "node-sass src/assets/scss/black-dashboard-react.scss src/assets/css/black-dashboard-react.css",
+    "minify-sass": "node-sass src/assets/scss/black-dashboard-react.scss src/assets/css/black-dashboard-react.min.css --output-style compressed",
+    "map-sass": "node-sass src/assets/scss/black-dashboard-react.scss src/assets/css/black-dashboard-react.css --source-map true"
   },
   "eslintConfig": {
     "extends": "react-app"

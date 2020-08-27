@@ -1,5 +1,4 @@
-import { GET_COINS } from '../actions/action_coins'
-
+import { GET_COINS, SELECT_COIN } from '../actions/action_coins'
 
 
 export function coinsReducer(state = [], action) {
@@ -9,4 +8,15 @@ export function coinsReducer(state = [], action) {
     default:
       return state
   }
+}
+
+
+export function selectedCoinReducer(state = {}, action) {
+  switch (action.type) {
+    case SELECT_COIN:
+      return action.payload
+    default:
+      return state
+  }
+
 }

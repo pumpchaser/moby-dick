@@ -1,15 +1,16 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import Layout from './components/Layout';
-import Dashboard from './pages/Dashboard';
+import { createBrowserHistory } from "history";
 
+import AdminLayout from "./layouts/Admin/Admin.js"
+
+
+const hist = createBrowserHistory();
 
 function App() {
   return (
-      <Router>
-        <Layout>
-          <Route exact path="/" render={ () => <Dashboard />}/>
-        </Layout>
+      <Router history={hist}>
+        <Route exact path="/dashboard" render={ (props) => <AdminLayout {...props} />} />
       </Router>
   );
 }

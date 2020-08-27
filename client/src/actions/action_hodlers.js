@@ -3,7 +3,7 @@ import Api, { TOP_HODLERS_URL } from '../api/api'
 export const GET_TOP_HODLERS = 'GET_TOP_HODLERS'
 
 
-export function fetchTopHodlers(token, limit=10) {
+export function fetchTopHodlers(token, limit=100) {
   return (dispatch) => {
     return Api.get(`${TOP_HODLERS_URL}?token=${token}&limit=${limit}`)
       .then((request) => {

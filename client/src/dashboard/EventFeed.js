@@ -1,5 +1,14 @@
-import React, { Component, Fragment } from 'react';
-import { Table, Icon, Segment} from 'semantic-ui-react'
+import React, { Component } from 'react';
+import { Icon } from 'semantic-ui-react'
+import { connect } from 'react-redux'
+
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  CardTitle,
+  Table,
+} from "reactstrap";
 
 
 class EventFeed extends Component {
@@ -27,19 +36,11 @@ class EventFeed extends Component {
   }
   constructor(props){
     super(props)
-    this.state = {
-      events: props.events,
-      currentCoin: {}
-    }
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({ events: nextProps.events, currentCoin: nextProps.currentCoin });  
-  }
-
-  getTransactionType(transaction, currentCoin){
+  getTransactionType(transaction){
     if (transaction.event === 'Transfer') {
-      if (transaction.returnValues.to.toLowerCase() ===this.state.currentCoin.uniswap_address.toLowerCase()){
+      if (transaction.returnValues.to.toLowerCase() ===this.props.currentCoin.uniswap_address.toLowerCase()){
         return 'Sell'
       } else {
         return 'Buy'
@@ -51,68 +52,77 @@ class EventFeed extends Component {
   processTransaction(transaction) {
     const fromAddress = transaction.returnValues.from || transaction.returnValues.owner
     return {
-      'type': this.getTransactionType(transaction, this.state.currentCoin),
+      'type': this.getTransactionType(transaction),
       'from': fromAddress,
       'to': transaction.returnValues.to,
-      'value': transaction.returnValues.value/(10**this.state.currentCoin.decimal),
+      'value': transaction.returnValues.value/(10**this.props.currentCoin.decimal),
       'key':  `${transaction.id}${transaction.logIndex}`,
       'url': `https://etherscan.io/tx/${transaction.transactionHash}`,
       'fromUrl': fromAddress ? `https://etherscan.io/address/${fromAddress}` : '',
-    }   
+    }
   }
 
   renderFeed(){
     return (
-      <Fragment>
-        {
-          this.state.events.slice(0, 20).map((event) => {
+        this.props.events.slice(0, 20).map((event) => {
             const transaction = this.processTransaction(event)
             const isTopHodler = this.props.topHodlers.map(h => h.address).includes(transaction.from)
             const eventIcon = (this.EVENT_CONFIG[transaction.type] && this.EVENT_CONFIG[transaction.type]['icon']) || 'question'
             const iconColor = (this.EVENT_CONFIG[transaction.type] && this.EVENT_CONFIG[transaction.type]['color']) || 'black'
 
-          return(
-            <Table.Row key={transaction.key}>
-              <Table.Cell>
-                <Icon name={eventIcon} color={iconColor}/>
-              </Table.Cell>
-              <Table.Cell>
-                <a href={transaction.url} target='_blank'>{transaction.type}</a>
-              </Table.Cell>
-              <Table.Cell>
-                <a href={transaction.fromUrl ? transaction.fromUrl : ''} target='_blank'>{transaction.from}</a>
-              </Table.Cell>
-              <Table.Cell>
-                {transaction.value} {this.state.currentCoin.name}
-              </Table.Cell>
-              <Table.Cell>
-                {isTopHodler ? `Hodler #${this.props.topHodlers.findIndex(transaction.from)}` : ''}
-              </Table.Cell>
-            </Table.Row>
-          )            
-
-          })
-        }
-      </Fragment>
-    );
+            return (
+              <tr key={transaction.key}>
+                <td>
+                  <Icon name={eventIcon} color={iconColor}/>
+                </td>
+                <td>
+                  <a href={transaction.url} target='_blank'>{transaction.type}</a>
+                </td>
+                <td>
+                  <a href={transaction.fromUrl ? transaction.fromUrl : ''} target='_blank'>{transaction.from}</a>
+                </td>
+                <td>
+                  {transaction.value} {this.props.currentCoin.name}
+                </td>
+                <td>
+                  {isTopHodler ? `Hodler #${this.props.topHodlers.findIndex(transaction.from)}` : ''}
+                </td>
+              </tr>
+            )
+        })
+    )
   }
 
   render() {
     return(
-      <Table celled padded size={'small'} compact={true}>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell singleLine></Table.HeaderCell>
-            <Table.HeaderCell singleLine>Type</Table.HeaderCell>
-            <Table.HeaderCell singleLine>Address</Table.HeaderCell>
-            <Table.HeaderCell singleLine>Value</Table.HeaderCell>
-            <Table.HeaderCell singleLine>Hodler Rank</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header> 
-        {this.renderFeed()}
-      </Table>
+      <Card>
+        <CardHeader>
+          <CardTitle tag="h4">Recent Transactions</CardTitle>
+        </CardHeader>
+        <CardBody>
+          <Table className="tablesorter" responsive>
+            <thead className="text-primary">
+              <tr>
+                <th></th>
+                <th>Type</th>
+                <th>Address</th>
+                <th>Amount</th>
+                <th>Rank</th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.renderFeed()}
+            </tbody>
+          </Table>
+        </CardBody>
+      </Card>
     )
   }
 }
 
-export default EventFeed
+function mapStateToProps(state) {
+  return { topHodlers: state.topHodlers, events: state.events, currentCoin: state.selectedCoin }
+}
+
+
+export default connect(mapStateToProps)(EventFeed)

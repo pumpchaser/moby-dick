@@ -1,8 +1,12 @@
 import Api, { TOKENS_URL } from '../api/api'
 
-export const GET_COINS = 'GET_COINS'
+import { fetchTopHodlers } from './action_hodlers'
+import { processEvents } from './action_events'
 
-export function fetchCoins(token, limit=10) {
+export const GET_COINS = 'GET_COINS'
+export const SELECT_COIN = 'SELECT_COIN'
+
+export function fetchCoins() {
   return (dispatch) => {
     return Api.get(`${TOKENS_URL}`)
       .then((request) => {
@@ -13,6 +17,12 @@ export function fetchCoins(token, limit=10) {
   }
 }
 
-
+export function selectCoin(coin) {
+  return (dispatch) => {
+    dispatch({ type: SELECT_COIN, payload: coin })
+    dispatch(fetchTopHodlers(coin.name))
+    dispatch(processEvents(coin))
+  }
+}
 
 

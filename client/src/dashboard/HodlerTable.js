@@ -1,26 +1,34 @@
 import React, { Component } from 'react';
-import { Table } from 'semantic-ui-react'
+
+import { connect } from 'react-redux'
+
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  CardTitle,
+  Table,
+} from "reactstrap";
 
 
 class HodlerTable extends Component {
   renderTopHodlers() {
     return (
-      this.props.topHodlers.map(hodler => {
+      this.props.topHodlers.map((hodler, index) => {
         return(
-          <Table.Row key={hodler.address}>
-            <Table.Cell>
-              {hodler.address}
-            </Table.Cell>
-            <Table.Cell>
+          <tr key={hodler.address}>
+            <td>#{index}</td>
+            <td>{hodler.address}</td>
+            <td>
               {hodler.amount/(10**this.props.currentCoin.decimal)}
-            </Table.Cell>
-            <Table.Cell>
+            </td>
+            <td>
+              {hodler.last_transaction.charAt(0)}{hodler.last_transaction.substring(1)/10**this.props.currentCoin.decimal}
+            </td>
+            <td>
               {hodler.number_transactions}
-            </Table.Cell>
-            <Table.Cell>
-              {hodler.last_transaction}
-            </Table.Cell>
-          </Table.Row>
+            </td>
+          </tr>
         )
       })
     )
@@ -28,22 +36,33 @@ class HodlerTable extends Component {
 
   render() {
     return(
-      <Table celled padded size={'small'} compact={true}>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell singleLine>Address</Table.HeaderCell>
-            <Table.HeaderCell singleLine>Amount</Table.HeaderCell>
-            <Table.HeaderCell singleLine># of Txs</Table.HeaderCell>
-            <Table.HeaderCell singleLine>Last Tx</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header> 
-
-        <Table.Body>
-          {this.renderTopHodlers()}
-        </Table.Body>
-      </Table>
+      <Card>
+        <CardHeader>
+          <CardTitle tag="h4">Top Hodlers</CardTitle>
+        </CardHeader>
+        <CardBody>
+          <Table className="tablesorter" responsive>
+            <thead className="text-primary">
+              <tr>
+                <th>Rank</th>
+                <th>Address</th>
+                <th>Amount</th>
+                <th>Last Tx</th>
+                <th># Txs</th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.renderTopHodlers()}
+            </tbody>
+          </Table>
+        </CardBody>
+      </Card>
     )
   }
 }
 
-export default HodlerTable
+function mapStateToProps(state) {
+  return { topHodlers: state.topHodlers, currentCoin: state.selectedCoin }
+}
+
+export default connect(mapStateToProps)(HodlerTable);

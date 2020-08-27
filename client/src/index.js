@@ -6,9 +6,12 @@ import promise from 'redux-promise'
 import thunk from 'redux-thunk'
 
 import reducers from './reducers/root_reducers'
-import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+
+import "./assets/scss/black-dashboard-react.scss";
+import "./assets/demo/demo.css";
+import "./assets/css/nucleo-icons.css";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const createStoreWithMiddleware = composeEnhancers(applyMiddleware(promise, thunk))(createStore)
