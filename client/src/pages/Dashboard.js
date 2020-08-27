@@ -9,17 +9,10 @@ import EventFeed from '../dashboard/EventFeed';
 import { Container, Grid, Menu } from 'semantic-ui-react'
 import { fetchTopHodlers } from '../actions/action_hodlers'
 import { processEvents } from '../actions/action_events'
+import { COIN_CONFIG } from '../coin_config'
 
 
 class Dashboard extends Component {
-  COIN_OPTIONS = {
-    'DYX': {
-      'contract': '0x023eBB622F461a15A344Edc45e6a5eabb5A68e03',
-      'uniswap': '0xbb0444980898acc79de3b66a7025f24fc720f2e5'
-    },
-
-  }
-
   constructor(props){
     super(props)
     this.state = {
@@ -36,8 +29,8 @@ class Dashboard extends Component {
     if (transaction.event === 'Transfer') {
       console.log(transaction.returnValues.to.toLowerCase())
       console.log('vs')
-      console.log(this.COIN_OPTIONS[this.state.currentToken]['uniswap'])
-      if (transaction.returnValues.to.toLowerCase() === this.COIN_OPTIONS[this.state.currentToken]['uniswap'].toLowerCase()){
+      console.log(COIN_CONFIG[this.state.currentToken]['uniswap'])
+      if (transaction.returnValues.to.toLowerCase() === COIN_CONFIG[this.state.currentToken]['uniswap'].toLowerCase()){
         return 'Sell'
       } else {
         return 'Buy'
@@ -83,7 +76,7 @@ class Dashboard extends Component {
   async processTransactions() {
     console.log("Processing...", this.state.currentToken)
 
-    const contractAddress = this.COIN_OPTIONS[this.state.currentToken]['contract']
+    const contractAddress = COIN_CONFIG[this.state.currentToken]['contract']
     const contractAbi = await this.getContractAbi(contractAddress)
 
     const contract = new web3.eth.Contract(contractAbi, contractAddress)
@@ -116,7 +109,7 @@ class Dashboard extends Component {
     return(
       <Fragment>
         {
-          Object.keys(this.COIN_OPTIONS).map((tokenName) => {return(
+          Object.keys(COIN_CONFIG).map((tokenName) => {return(
             <Menu.Item key={tokenName} color={'blue'} onClick={() => this.setActiveToken(tokenName)} active={this.state.currentToken === tokenName}>
               {tokenName}
             </Menu.Item>
@@ -154,7 +147,7 @@ class Dashboard extends Component {
 }
 
 function mapStateToProps(state) {
-  return { topHodlers: state.topHodlers, processEvents: state.processEvents}
+  return { topHodlers: state.topHodlers, processEvents: state.processEvents, events: state.events}
 }
 
 export default connect(mapStateToProps, {fetchTopHodlers, processEvents})(Dashboard);
