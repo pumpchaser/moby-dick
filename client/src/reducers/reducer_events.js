@@ -18,7 +18,6 @@ export function eventsReducer(state = {
   switch (action.type) {
     case NEW_EVENT:
       // notify logic
-      console.log("NEW_EVENT!", action.payload)
       const transaction = action.payload
       const txURL = `https://etherscan.io/tx/${transaction.transactionHash}`
 	    const newEvent = {

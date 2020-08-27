@@ -14,8 +14,6 @@ async function getContractAbi(contractAddress) {
 
 export function processEvents(currentToken) {
 	return async dispatch => {
-		console.log("Processing...", currentToken)
-
 		const contractAddress = COIN_CONFIG[currentToken]['contract']
 		const contractAbi = await getContractAbi(contractAddress)
 
