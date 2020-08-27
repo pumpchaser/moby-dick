@@ -53,7 +53,7 @@ class EventFeed extends Component {
       'type': this.getTransactionType(transaction, this.state.currentCoin),
       'from': transaction.returnValues.from || transaction.returnValues.owner,
       'to': transaction.returnValues.to,
-      'value': transaction.returnValues.value/(10*this.state.currentCoin.decimal),
+      'value': transaction.returnValues.value/(10**this.state.currentCoin.decimal),
       'txId': transaction.id,
       'url': `https://etherscan.io/tx/${transaction.transactionHash}`,
     }   
