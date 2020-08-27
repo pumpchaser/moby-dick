@@ -65,7 +65,7 @@ class EventFeed extends Component {
         {
           this.state.events.slice(0, 20).map((event) => {
             const transaction = this.processTransaction(event)
-            const isTopHodler = this.props.topHodlers.includes(transaction.from)
+            const isTopHodler = this.props.topHodlers.map(h => h.address).includes(transaction.from)
             const eventIcon = (this.EVENT_CONFIG[transaction.type] && this.EVENT_CONFIG[transaction.type]['icon']) || 'question'
             const iconColor = (this.EVENT_CONFIG[transaction.type] && this.EVENT_CONFIG[transaction.type]['color']) || 'black'
             return(
