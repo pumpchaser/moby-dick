@@ -55,7 +55,7 @@ class EventFeed extends Component {
       'from': fromAddress,
       'to': transaction.returnValues.to,
       'value': transaction.returnValues.value/(10**this.state.currentCoin.decimal),
-      'txId': transaction.id,
+      'key':  `${transaction.id}${transaction.logIndex}`,
       'url': `https://etherscan.io/tx/${transaction.transactionHash}`,
       'fromUrl': fromAddress ? `https://etherscan.io/address/${fromAddress}` : '',
     }   
@@ -72,7 +72,7 @@ class EventFeed extends Component {
             const iconColor = (this.EVENT_CONFIG[transaction.type] && this.EVENT_CONFIG[transaction.type]['color']) || 'black'
 
           return(
-            <Table.Row key={transaction.txId}>
+            <Table.Row key={transaction.key}>
               <Table.Cell>
                 <Icon name={eventIcon} color={iconColor}/>
               </Table.Cell>
