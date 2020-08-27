@@ -12,9 +12,7 @@ function getTransactionType(transaction, currentToken){
   return transaction.event
 }
 
-export function eventsReducer(state = {
-	events: []
-}, action) {
+export function eventsReducer(state = [], action) {
   switch (action.type) {
     case NEW_EVENT:
       // notify logic
@@ -28,11 +26,9 @@ export function eventsReducer(state = {
 	      'txId': transaction.id,
 	      'url': txURL,
 	    }      
-      let { events } = state
-    	events.unshift(newEvent)
-      return Object.assign({}, state, {
-        events: events
-      })
+      let existingEvents = state
+    	existingEvents.unshift(newEvent)
+      return Object.assign([], state, existingEvents)
     default:
       return state
   }

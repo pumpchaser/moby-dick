@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 
 import { Feed, Icon, Segment} from 'semantic-ui-react'
 
-class MainFeed extends Component {
+class EventFeed extends Component {
   EVENT_CONFIG = {
     'Approval': {
       'icon': 'warning',
@@ -80,4 +80,4 @@ class MainFeed extends Component {
   }
 }
 
-export default MainFeed
+export default EventFeed
