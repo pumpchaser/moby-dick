@@ -49,7 +49,6 @@ class EventFeed extends Component {
   }
 
   processTransaction(transaction) {
-    console.log(transaction)
     return {
       'type': this.getTransactionType(transaction, this.state.currentCoin),
       'from': transaction.returnValues.from || transaction.returnValues.owner,
