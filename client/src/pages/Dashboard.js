@@ -6,7 +6,7 @@ import axios from 'axios';
 
 import web3 from '../web3';
 import EventFeed from '../dashboard/EventFeed';
-import { Container, Grid, Menu, Feed } from 'semantic-ui-react'
+import { Segment, Container, Grid, Menu, Feed,  Header, Table } from 'semantic-ui-react'
 import { fetchTopHodlers } from '../actions/action_hodlers'
 import { fetchCoins } from '../actions/action_coins'
 import { processEvents } from '../actions/action_events'
@@ -43,7 +43,22 @@ class Dashboard extends Component {
   renderTopHodlers() {
     return (
       this.props.topHodlers.map(hodler => {
-        return <Feed.Event key={hodler['address']}>{hodler['address']}</Feed.Event>
+        return(
+          <Table.Row>
+            <Table.Cell>
+              {hodler.address}
+            </Table.Cell>
+            <Table.Cell>
+              {hodler.amount/(10**this.state.currentCoin.decimal)}
+            </Table.Cell>
+            <Table.Cell>
+              {hodler.number_transactions}
+            </Table.Cell>
+            <Table.Cell>
+              {hodler.last_transaction}
+            </Table.Cell>
+          </Table.Row>
+        )
       })
     )
 
@@ -83,7 +98,21 @@ class Dashboard extends Component {
               </Grid.Row>
               <Grid.Row>
                 Top Hodlers: 
-                <Feed>{this.renderTopHodlers()}</Feed>
+
+                  <Table celled padded size={'small'} compact={true}>
+                    <Table.Header>
+                      <Table.Row>
+                        <Table.HeaderCell singleLine>Address</Table.HeaderCell>
+                        <Table.HeaderCell singleLine>Amount</Table.HeaderCell>
+                        <Table.HeaderCell singleLine># of Txs</Table.HeaderCell>
+                        <Table.HeaderCell singleLine>Last Tx</Table.HeaderCell>
+                      </Table.Row>
+                    </Table.Header> 
+
+                    <Table.Body>
+                      {this.renderTopHodlers()}
+                    </Table.Body>
+                  </Table>
               </Grid.Row>
             </Grid.Column>
           </Grid>
