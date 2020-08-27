@@ -8,33 +8,36 @@ import web3 from '../web3';
 import EventFeed from '../dashboard/EventFeed';
 import { Container, Grid, Menu, Feed } from 'semantic-ui-react'
 import { fetchTopHodlers } from '../actions/action_hodlers'
+import { fetchCoins } from '../actions/action_coins'
 import { processEvents } from '../actions/action_events'
-import { COIN_CONFIG } from '../coin_config'
 
 
 class Dashboard extends Component {
   constructor(props){
     super(props)
     this.state = {
-      currentToken: '',
+      currentCoin: {},
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
+    this.props.fetchCoins()
   }
 
 
   async setActiveToken(newToken) {
-    const { currentToken } = this.state
-    if (currentToken === newToken) {
+    const { currentCoin } = this.state
+    if (currentCoin.name === newToken) {
       return
     }
+    const newCoin = this.props.coins.find(c => c.name == newToken)
     await this.setState({
-      currentToken: newToken,
+      currentCoin: newCoin,
+
     })
 
     this.props.fetchTopHodlers(newToken)
-    await this.props.processEvents(newToken)
+    await this.props.processEvents(newCoin)
   }
 
   renderTopHodlers() {
@@ -49,9 +52,10 @@ class Dashboard extends Component {
     return(
       <Fragment>
         {
-          Object.keys(COIN_CONFIG).map((tokenName) => {return(
-            <Menu.Item key={tokenName} color={'blue'} onClick={() => this.setActiveToken(tokenName)} active={this.state.currentToken === tokenName}>
-              {tokenName}
+          this.props.coins.map((coin) => {
+          return(
+            <Menu.Item key={coin.name} color={'blue'} onClick={() => this.setActiveToken(coin.name)} active={this.state.currentCoin.name === coin.name}>
+              {coin.name}
             </Menu.Item>
           )})
         }
@@ -74,7 +78,7 @@ class Dashboard extends Component {
                 Main Feed
                 <EventFeed 
                   events={this.props.events} 
-                  currentToken={this.state.currentToken} 
+                  currentCoin={this.state.currentCoin} 
                   topHodlers={this.props.topHodlers}/>
               </Grid.Row>
               <Grid.Row>
@@ -91,8 +95,8 @@ class Dashboard extends Component {
 }
 
 function mapStateToProps(state) {
-  return { topHodlers: state.topHodlers, processEvents: state.processEvents, events: state.events}
+  return { fetchCoins: state.fetchCoins, topHodlers: state.topHodlers, processEvents: state.processEvents, events: state.events, coins: state.coins}
 }
 
-export default connect(mapStateToProps, {fetchTopHodlers, processEvents})(Dashboard);
+export default connect(mapStateToProps, {fetchTopHodlers, processEvents, fetchCoins})(Dashboard);
 

@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // Token URL
-export const TOKENS_URL = `{process.env.REACT_APP_BACKEND_URI}/tokens`
+export const TOKENS_URL = `${process.env.REACT_APP_BACKEND_URI}/tokens`
 
 // Hodlers URL
 export const TOP_HODLERS_URL = `${process.env.REACT_APP_BACKEND_URI}/hodlers`

@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Feed, Icon, Segment} from 'semantic-ui-react'
 
-import { COIN_CONFIG } from '../coin_config'
 
 class EventFeed extends Component {
   EVENT_CONFIG = {
@@ -30,17 +29,17 @@ class EventFeed extends Component {
     super(props)
     this.state = {
       events: props.events,
-      currentToken: ''
+      currentCoin: {}
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ events: nextProps.events, currentToken: nextProps.currentToken });  
+    this.setState({ events: nextProps.events, currentCoin: nextProps.currentCoin });  
   }
 
-  getTransactionType(transaction, currentToken){
+  getTransactionType(transaction, currentCoin){
     if (transaction.event === 'Transfer') {
-      if (transaction.returnValues.to.toLowerCase() === COIN_CONFIG[this.state.currentToken]['uniswap'].toLowerCase()){
+      if (transaction.returnValues.to.toLowerCase() ===this.state.currentCoin.uniswap_address.toLowerCase()){
         return 'Sell'
       } else {
         return 'Buy'
@@ -50,11 +49,12 @@ class EventFeed extends Component {
   }
 
   processTransaction(transaction) {
+    console.log(transaction)
     return {
-      'type': this.getTransactionType(transaction, this.state.currentToken),
+      'type': this.getTransactionType(transaction, this.state.currentCoin),
       'from': transaction.returnValues.from || transaction.returnValues.owner,
       'to': transaction.returnValues.to,
-      'value': transaction.returnValues.value/1000000000000000000,
+      'value': transaction.returnValues.value/(10*this.state.currentCoin.decimal),
       'txId': transaction.id,
       'url': `https://etherscan.io/tx/${transaction.transactionHash}`,
     }   
@@ -77,11 +77,11 @@ class EventFeed extends Component {
                 <Feed.Content>
                   <Feed.Summary>
                     <Feed.User href={transaction.url} target='_blank'>{transaction.type} by {transaction.from}</Feed.User>
-                    <Feed.Date>{isTopHodler ? this.props.topHodlers.findIndex(transaction.from) : ''}</Feed.Date>
+                    <Feed.Date>{isTopHodler ? `Hodler #${this.props.topHodlers.findIndex(transaction.from)}` : ''}</Feed.Date>
                   </Feed.Summary>
                   <Feed.Meta>
                     <Feed.Like>
-                      {transaction.value} {this.state.currentToken}
+                      {transaction.value} {this.state.currentCoin.name}
                     </Feed.Like>
                   </Feed.Meta>
                 </Feed.Content>
