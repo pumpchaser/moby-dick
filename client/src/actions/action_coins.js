@@ -1,5 +1,4 @@
 import Api, { TOKENS_URL } from '../api/api'
-import web3 from '../web3';
 
 export const GET_COINS = 'GET_COINS'
 

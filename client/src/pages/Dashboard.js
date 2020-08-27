@@ -2,13 +2,11 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux'
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
-import axios from 'axios';
 
-import web3 from '../web3';
 import EventFeed from '../dashboard/EventFeed';
 import HodlerTable from '../dashboard/HodlerTable';
 
-import { Segment, Container, Grid, Menu, Feed, Header } from 'semantic-ui-react'
+import { Container, Grid, Menu } from 'semantic-ui-react'
 import { fetchTopHodlers } from '../actions/action_hodlers'
 import { fetchCoins } from '../actions/action_coins'
 import { processEvents } from '../actions/action_events'
@@ -32,7 +30,7 @@ class Dashboard extends Component {
     if (currentCoin.name === newToken) {
       return
     }
-    const newCoin = this.props.coins.find(c => c.name == newToken)
+    const newCoin = this.props.coins.find(c => c.name === newToken)
     await this.setState({
       currentCoin: newCoin,
 
