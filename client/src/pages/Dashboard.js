@@ -44,7 +44,7 @@ class Dashboard extends Component {
     return (
       this.props.topHodlers.map(hodler => {
         return(
-          <Table.Row>
+          <Table.Row key={hodler.address}>
             <Table.Cell>
               {hodler.address}
             </Table.Cell>
