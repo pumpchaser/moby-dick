@@ -9957,6 +9957,7 @@ h1, h2, h3, h4, h5, h6 {
   color: rgba(255, 255, 255, 0.8); }
 
 a {
+  color: #ffffff;
   font-weight: 300; }
   a:hover, a:focus {
     color: #e14eca; }
@@ -10935,7 +10936,7 @@ hr {
   .main-panel[data="primary"] {
     border-top: 2px solid #e14eca; }
   .main-panel > .content {
-    padding: 78px 30px 30px 280px;
+    padding: 78px 30px 30px 80px;
     min-height: calc(100vh - 70px); }
   .main-panel > .navbar {
     margin-bottom: 0; }
@@ -12527,5 +12528,3 @@ textarea.form-control {
 
 select.form-control option {
   color: #888; }
-
-/*# sourceMappingURL=black-dashboard-react.css.map */
