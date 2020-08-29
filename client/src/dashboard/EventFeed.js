@@ -54,14 +54,16 @@ class EventFeed extends Component {
 
   processTransaction(transaction) {
     const fromAddress = transaction.returnValues.from || transaction.returnValues.owner
+    const amount = transaction.returnValues.tokens || transaction.returnValues.value
     return {
       'type': this.getTransactionType(transaction),
       'from': fromAddress,
       'to': transaction.returnValues.to,
-      'value': transaction.returnValues.value,
+      'value': displayAmount(amount, this.props.currentCoin.decimal),
       'key':  `${transaction.id}${transaction.logIndex}`,
       'url': `https://etherscan.io/tx/${transaction.transactionHash}`,
       'fromUrl': fromAddress ? `https://etherscan.io/address/${fromAddress}` : '',
+      'fromAddressBalance': displayAmount(transaction.fromAddressBalance, this.props.currentCoin.decimal)
     }
   }
 
@@ -84,13 +86,11 @@ class EventFeed extends Component {
                 <td>
                   {isTopHodler ? `Hodler #${this.props.topHodlers.findIndex(transaction.from)}` : ''}
 
-                  <a href={transaction.fromUrl ? transaction.fromUrl : ''} target='_blank'>{transaction.from} ( ETH | ({this.props.currentCoin.name})) </a>
+                  <a href={transaction.fromUrl ? transaction.fromUrl : ''} target='_blank'>{transaction.from} ( ETH | {transaction.fromAddressBalance} {this.props.currentCoin.name}) </a>
                 </td>
                 <td>
                   {displayAmount(transaction.value, this.props.currentCoin.decimal)}
                 </td>
-                <td>
-                                  </td>
               </tr>
             )
         })
