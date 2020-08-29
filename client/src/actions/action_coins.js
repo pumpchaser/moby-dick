@@ -7,6 +7,7 @@ export const GET_COINS = 'GET_COINS'
 export const SELECT_COIN = 'SELECT_COIN'
 
 export function fetchCoins() {
+  console.log('enter fetchCoins')
   return (dispatch) => {
     return Api.get(`${TOKENS_URL}`)
       .then((request) => {

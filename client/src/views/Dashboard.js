@@ -75,11 +75,11 @@ class Dashboard extends React.Component {
       <>
         <div className="content">
           <Row>
-            <Col lg="6" md="12">
+            <Col lg="8" md="12">
                 <EventFeed />
             </Col>
 
-            <Col lg="6" md="12">
+            <Col lg="4" md="12">
                  <HodlerTable />
             </Col>
           </Row>

@@ -111,11 +111,6 @@ class Admin extends React.Component {
     return (
       <>
         <div className="wrapper">
-          <Sidebar
-            {...this.props}
-            bgColor={this.state.backgroundColor}
-            toggleSidebar={this.toggleSidebar}
-          />
           <div
             className="main-panel"
             ref="mainPanel"

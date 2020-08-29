@@ -10,6 +10,9 @@ import {
   Table,
 } from "reactstrap";
 
+import { displayAmount } from '../utils/amount'
+import web3 from '../web3';
+
 
 class EventFeed extends Component {
   EVENT_CONFIG = {
@@ -55,7 +58,7 @@ class EventFeed extends Component {
       'type': this.getTransactionType(transaction),
       'from': fromAddress,
       'to': transaction.returnValues.to,
-      'value': transaction.returnValues.value/(10**this.props.currentCoin.decimal),
+      'value': transaction.returnValues.value,
       'key':  `${transaction.id}${transaction.logIndex}`,
       'url': `https://etherscan.io/tx/${transaction.transactionHash}`,
       'fromUrl': fromAddress ? `https://etherscan.io/address/${fromAddress}` : '',
@@ -67,26 +70,27 @@ class EventFeed extends Component {
         this.props.events.slice(0, 20).map((event) => {
             const transaction = this.processTransaction(event)
             const isTopHodler = this.props.topHodlers.map(h => h.address).includes(transaction.from)
-            const eventIcon = (this.EVENT_CONFIG[transaction.type] && this.EVENT_CONFIG[transaction.type]['icon']) || 'question'
-            const iconColor = (this.EVENT_CONFIG[transaction.type] && this.EVENT_CONFIG[transaction.type]['color']) || 'black'
+            // const eventIcon = (this.EVENT_CONFIG[transaction.type] && this.EVENT_CONFIG[transaction.type]['icon']) || 'icon-simple-addquestion'
+            // const iconColor = (this.EVENT_CONFIG[transaction.type] && this.EVENT_CONFIG[transaction.type]['color']) || 'black'
 
             return (
               <tr key={transaction.key}>
                 <td>
-                  <Icon name={eventIcon} color={iconColor}/>
+                  Some time ago
                 </td>
                 <td>
                   <a href={transaction.url} target='_blank'>{transaction.type}</a>
                 </td>
                 <td>
-                  <a href={transaction.fromUrl ? transaction.fromUrl : ''} target='_blank'>{transaction.from}</a>
-                </td>
-                <td>
-                  {transaction.value} {this.props.currentCoin.name}
-                </td>
-                <td>
                   {isTopHodler ? `Hodler #${this.props.topHodlers.findIndex(transaction.from)}` : ''}
+
+                  <a href={transaction.fromUrl ? transaction.fromUrl : ''} target='_blank'>{transaction.from} ( ETH | ({this.props.currentCoin.name})) </a>
                 </td>
+                <td>
+                  {displayAmount(transaction.value, this.props.currentCoin.decimal)}
+                </td>
+                <td>
+                                  </td>
               </tr>
             )
         })
@@ -103,11 +107,11 @@ class EventFeed extends Component {
           <Table className="tablesorter" responsive>
             <thead className="text-primary">
               <tr>
-                <th></th>
+                <th>Time</th>
                 <th>Type</th>
                 <th>Address</th>
-                <th>Amount</th>
-                <th>Rank</th>
+                <th>Amount ({this.props.currentCoin.name})</th>
+                <th>Amount (ETH)</th>
               </tr>
             </thead>
             <tbody>

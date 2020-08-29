@@ -11019,7 +11019,7 @@ hr {
     .sidebar-mini .sidebar:hover .nav [data-toggle="collapse"] ~ div > ul > li > a .sidebar-mini-icon {
       opacity: 0; }
   .sidebar-mini .main-panel > .content {
-    padding-left: 130px; }
+    padding-left: 30px; }
   .sidebar-mini footer {
     padding-left: 130px; }
   .navbar-minimize button {
