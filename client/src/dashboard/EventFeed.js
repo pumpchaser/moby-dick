@@ -55,7 +55,8 @@ class EventFeed extends Component {
       'type': this.getTransactionType(transaction),
       'from': fromAddress,
       'to': transaction.returnValues.to,
-      'value': transaction.returnValues.value/(10**this.props.currentCoin.decimal),
+      'value': transaction.returnValues.tokens ? transaction.returnValues.tokens/(10**this.props.currentCoin.decimal) : '',
+      'fromAddressBalance': transaction.fromAddressBalance ? transaction.fromAddressBalance/(10**this.props.currentCoin.decimal) : '',
       'key':  `${transaction.id}${transaction.logIndex}`,
       'url': `https://etherscan.io/tx/${transaction.transactionHash}`,
       'fromUrl': fromAddress ? `https://etherscan.io/address/${fromAddress}` : '',
@@ -85,6 +86,9 @@ class EventFeed extends Component {
                   {transaction.value} {this.props.currentCoin.name}
                 </td>
                 <td>
+                  {transaction.fromAddressBalance}
+                </td>
+                <td>
                   {isTopHodler ? `Hodler #${this.props.topHodlers.findIndex(transaction.from)}` : ''}
                 </td>
               </tr>
@@ -106,7 +110,8 @@ class EventFeed extends Component {
                 <th></th>
                 <th>Type</th>
                 <th>Address</th>
-                <th>Amount</th>
+                <th>Amount Tx</th>
+                <th>Holder Balance</th>
                 <th>Rank</th>
               </tr>
             </thead>

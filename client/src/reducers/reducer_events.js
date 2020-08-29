@@ -6,7 +6,9 @@ export function eventsReducer(state = [], action) {
       return []
     case NEW_EVENT:
       let existingEvents = state
-    	existingEvents.unshift(action.payload)
+      let event = action.payload
+      event['fromAddressBalance'] = action.fromAddressBalance
+    	existingEvents.unshift(event)
       return Object.assign([], state, existingEvents)
     default:
       return state
