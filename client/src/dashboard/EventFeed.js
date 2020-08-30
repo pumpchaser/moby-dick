@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+import web3 from '../web3';
 
 import {
   Card,
@@ -10,6 +11,7 @@ import {
 } from "reactstrap";
 
 import { displayAmount } from '../utils/amount'
+import moment from 'moment'
 
 
 class EventFeed extends Component {
@@ -45,6 +47,13 @@ class EventFeed extends Component {
     }
     return transaction.event
   }
+  calculateTimeDifference(transactionBlockNumber){
+    const averageBlockTime = 17 * 1.5 * 1000
+    const blockDiff = this.props.blockchain.currentBlock - transactionBlockNumber 
+    const time = Date.now() - (blockDiff * averageBlockTime)
+
+    return moment(time).fromNow()
+  }
 
   processTransaction(transaction) {
     const fromAddress = transaction.returnValues.from || transaction.returnValues.owner
@@ -52,6 +61,7 @@ class EventFeed extends Component {
     return {
       'type': this.getTransactionType(transaction),
       'from': fromAddress,
+      'timeSince': this.calculateTimeDifference(transaction.blockNumber),
       'to': transaction.returnValues.to,
       'value': displayAmount(amount, this.props.currentCoin.decimal),
       'key':  `${transaction.id}${transaction.logIndex}`,
@@ -61,7 +71,9 @@ class EventFeed extends Component {
     }
   }
 
+
   renderFeed(){
+
     return (
         this.props.events.slice(0, 20).map((event) => {
             const transaction = this.processTransaction(event)
@@ -72,7 +84,7 @@ class EventFeed extends Component {
             return (
               <tr key={transaction.key}>
                 <td>
-                  Some time ago
+                  {transaction.timeSince}
                 </td>
                 <td>
                   <a href={transaction.url} target='_blank'>{transaction.type}</a>
@@ -83,7 +95,7 @@ class EventFeed extends Component {
                   <a href={transaction.fromUrl ? transaction.fromUrl : ''} target='_blank'>{transaction.from} ( ETH | {transaction.fromAddressBalance} {this.props.currentCoin.name}) </a>
                 </td>
                 <td>
-                  {displayAmount(transaction.value, this.props.currentCoin.decimal)}
+                  {transaction.value}
                 </td>
               </tr>
             )
@@ -119,7 +131,7 @@ class EventFeed extends Component {
 }
 
 function mapStateToProps(state) {
-  return { topHodlers: state.topHodlers, events: state.events, currentCoin: state.selectedCoin }
+  return { topHodlers: state.topHodlers, events: state.events, currentCoin: state.selectedCoin, blockchain: state.blockchain }
 }
 
 
