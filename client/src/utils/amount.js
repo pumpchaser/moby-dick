@@ -1,4 +1,4 @@
 export function displayAmount(amount, decimal) {
-  var amount = amount / 10 ** decimal
-  return amount.toFixed(2).toLocaleString()
+  var convertedAmount = amount / 10 ** decimal
+  return convertedAmount.toFixed(2).toLocaleString()
 }

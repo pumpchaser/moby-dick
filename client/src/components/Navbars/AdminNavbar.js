@@ -17,6 +17,7 @@
 */
 import React from "react";
 import { connect } from 'react-redux'
+import { withRouter } from "react-router-dom"
 // nodejs library that concatenates classes
 import classNames from "classnames";
 
@@ -38,6 +39,7 @@ import {
   Modal
 } from "reactstrap";
 
+import hist from '../../history'
 
 import { selectCoin } from '../../actions/action_coins'
 
@@ -108,6 +110,13 @@ class AdminNavbar extends React.Component {
     )
   }
 
+  goToTokenPage() {
+    this.props.history.push("/tokens")
+  }
+
+  goToDashboardPage() {
+    this.props.history.push("/dashboard")
+  }
 
   render() {
     return (
@@ -133,7 +142,7 @@ class AdminNavbar extends React.Component {
                   <span className="navbar-toggler-bar bar3" />
                 </button>
               </div>
-              <NavbarBrand href="#pablo" onClick={e => e.preventDefault()}>
+              <NavbarBrand href="" onClick={() => this.goToDashboardPage()}>
                 SPEAR THOSE WHALES
               </NavbarBrand>
             </div>
@@ -199,7 +208,7 @@ class AdminNavbar extends React.Component {
                       <DropdownItem className="nav-item">Profile</DropdownItem>
                     </NavLink>
                     <NavLink tag="li">
-                      <DropdownItem className="nav-item">Settings</DropdownItem>
+                      <DropdownItem className="nav-item" onClick={() => this.goToTokenPage()}>Manage Tokens</DropdownItem>
                     </NavLink>
                     <DropdownItem divider tag="li" />
                     <NavLink tag="li">
@@ -239,4 +248,4 @@ function mapStateToProps(state) {
   return { coins: state.coins }
 }
 
-export default connect(mapStateToProps, { selectCoin })(AdminNavbar);
+export default withRouter(connect(mapStateToProps, { selectCoin })(AdminNavbar));

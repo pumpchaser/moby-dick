@@ -17,7 +17,6 @@ export function processEvents(newCoin) {
 		dispatch({ type: CLEAR_EVENTS })
 		const contractAddress = newCoin.contract_address
 		const contractAbi = await getContractAbi(contractAddress)
-    const lastBlock = await web3.eth.getBlockNumber()
 		const contract = new web3.eth.Contract(contractAbi, contractAddress)
 		const currentBlock = await web3.eth.getBlockNumber()
 		contract.events.allEvents({fromBlock: currentBlock-50}, async (err, event) => {

@@ -16,14 +16,14 @@
 
 */
 import Dashboard from "./views/Dashboard.js";
-import Icons from "./views/Icons.js";
 import Map from "./views/Map.js";
 import Notifications from "./views/Notifications.js";
 import Rtl from "./views/Rtl.js";
 import TableList from "./views/TableList.js";
 import Typography from "./views/Typography.js";
 import UserProfile from "./views/UserProfile.js";
-
+import TokenForm from "./dashboard/TokenForm.js";
+import ManageToken from "./dashboard/ManageToken.js";
 
 var routes = [
   {
@@ -35,19 +35,19 @@ var routes = [
     layout: "/admin"
   },
   {
-    path: "/icons",
-    name: "Icons",
+    path: "/tokens/form",
+    name: "TokenForm",
     rtlName: "الرموز",
     icon: "tim-icons icon-atom",
-    component: Icons,
+    component: TokenForm,
     layout: "/admin"
   },
   {
-    path: "/map",
-    name: "Map",
+    path: "/tokens",
+    name: "ManageToken",
     rtlName: "خرائط",
     icon: "tim-icons icon-pin",
-    component: Map,
+    component: ManageToken,
     layout: "/admin"
   },
   {
