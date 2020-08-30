@@ -68,7 +68,7 @@ class EventFeed extends Component {
     return (
         this.props.events.slice(0, 20).map((event) => {
             const transaction = this.processTransaction(event)
-            const isTopHodler = this.props.topHodlers.map(h => h.address).includes(transaction.from)
+            const isTopHodler = this.props.topHodlers.map(h => h.address.toLowerCase()).includes(transaction.from.toLowerCase())
 
             return (
               <tr key={transaction.key}>
