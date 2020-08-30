@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux'
-import classNames from "classnames";
 import { withRouter } from "react-router-dom"
 
 import {
@@ -40,7 +39,6 @@ class ManageToken extends Component {
             <td>{coin.total_supply}</td>
             <td>{coin.decimal}</td>
             <td>{coin.uniswap_address}</td>
-            <td></td>
             <td>{coin.last_block}/ETH_LAST_BLOCK</td>
             <td><i className="tim-icons icon-pencil" /></td>
           </tr>
@@ -102,7 +100,6 @@ class ManageToken extends Component {
                       <th>Total Supply</th>
                       <th>Decimal</th>
                       <th>Uniswap</th>
-                      <th>WatchList</th>
                       <th>Last Sync</th>
                       <th></th>
                     </tr>

@@ -1,5 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux'
 
+import { withRouter } from "react-router-dom"
 // reactstrap components
 import {
   Button,
@@ -7,7 +9,6 @@ import {
   CardHeader,
   CardBody,
   CardFooter,
-  CardText,
   FormGroup,
   Form,
   Input,
@@ -15,37 +16,45 @@ import {
   Col
 } from "reactstrap";
 
-
-// function AddTokenModal() {
-//   const [open, setOpen] = React.useState(false)
-//   const tokenNameRef = React.useRef(null)
-//   const contractAddressRef = React.useRef(null)
-//   const blockCreationRef = React.useRef(null)
-//   const lastBlockRef = React.useRef(null)
-//   const uniswapAddressRef = React.useRef(null)
-//   const eventsRef = React.useRef(null)
-
-//   function submit() {
-//     // API Call to submit token here
-//     const tokenName = tokenNameRef.current.value
-//     const contractAddress = contractAddressRef.current.value
-//     const blockCreation = blockCreationRef.current.value
-//     const lastBlock = lastBlockRef.current.value
-//     const uniswapAddress = uniswapAddressRef.current.value
-//     const events = eventsRef.current.value
-
-//     console.log('Submit Add Token Form:')
-//     console.log(tokenName)
-//     console.log(contractAddress)
-//     console.log(blockCreation)
-//     console.log(lastBlock)
-//     console.log(uniswapAddress)
-//     console.log(events)
-
-//     setOpen(false)
-//   }
+import { createToken } from '../actions/action_coins'
 
 class TokenForm extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      name: '',
+      contract_address: '',
+      uniswap_address: '',
+      events: '',
+      synced: false,
+      decimal: '',
+      total_supply: '',
+      block_creation: '',
+      watchlist_addresses: '',
+      logo_url: '',
+      website_url: '',
+      coingecko_url: '',
+      twitter_url: '',
+      telegram_url: '',
+    }
+  }
+
+  handleChange = (event) => {
+    const { target: { name, value } } = event
+    this.setState({ [name]: value })
+  }
+
+  handleSubmit = (event) => {
+    event.preventDefault()
+    this.props.createToken(this.state).then((response) => {
+      if (response.type === 'success') {
+          this.props.history.push('/tokens')
+      }
+    })
+  }
+
+
   render() {
     return (
       <>
@@ -57,23 +66,28 @@ class TokenForm extends React.Component {
                   <h5 className="title">Token Form</h5>
                 </CardHeader>
                 <CardBody>
-                  <Form>
+                  <Form onSubmit={this.handleSubmit}>
                     <Row>
-                      <Col classname="pr-md-1" md="5">
+                      <Col className="pr-md-1" md="5">
                         <FormGroup>
                           <label>Token Name</label>
                           <Input
                             placeholder="name"
+                            name="name"
                             type="text"
+                            onChange={this.handleChange}
+                            required="true"
                           />
                         </FormGroup>
                       </Col>
-                      <Col classname="pr-md-1" md="5">
+                      <Col className="pr-md-1" md="5">
                         <FormGroup>
                           <label>Contract Address</label>
                           <Input
+                            name="contract_address"
                             placeholder="Address"
                             type="text"
+                            onChange={this.handleChange}
                           />
                         </FormGroup>
                       </Col>
@@ -83,37 +97,21 @@ class TokenForm extends React.Component {
                         <FormGroup>
                           <label>Events</label>
                           <Input
-                            placeholder="i.e: 'Transfer,Approval'"
+                            name="events"
+                            placeholder="'Transfer,Approval'"
                             type="text"
+                            onChange={this.handleChange}
                           />
                         </FormGroup>
                       </Col>
-                      <Col className="pr-md-1" md="5">
-                        <FormGroup>
-                          <label>Decimals</label>
-                          <Input
-                            placeholder="Decimal"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
                       <Col className="pr-md-1" md="5">
                         <FormGroup>
                           <label>Block Creation</label>
                           <Input
+                            name="block_creation"
                             placeholder="Creation Block"
                             type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col className="pr-md-1" md="5">
-                        <FormGroup>
-                          <label>Uniswap Address</label>
-                          <Input
-                            placeholder="Uniswap"
-                            type="text"
+                            onChange={this.handleChange}
                           />
                         </FormGroup>
                       </Col>
@@ -121,10 +119,71 @@ class TokenForm extends React.Component {
                     <Row>
                       <Col className="pr-md-1" md="5">
                         <FormGroup>
+                          <label>Decimals</label>
+                          <Input
+                            name="decimal"
+                            placeholder="Decimal"
+                            type="text"
+                            onChange={this.handleChange}
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col className="pr-md-1" md="5">
+                        <FormGroup>
+                          <label>Total Supply</label>
+                          <Input
+                            name="total_supply"
+                            placeholder="Total Supply"
+                            type="text"
+                            onChange={this.handleChange}
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="pr-md-1" md="5">
+                        <FormGroup>
+                          <label>Uniswap Address</label>
+                          <Input
+                            name="uniswap_address"
+                            placeholder="Uniswap"
+                            type="text"
+                            onChange={this.handleChange}
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col className="pr-md-1" md="5">
+                        <FormGroup>
                           <label>Logo URL</label>
                           <Input
-                            placeholder="url"
+                            name="logo_url"
+                            placeholder="logo url"
                             type="text"
+                            onChange={this.handleChange}
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="pr-md-1" md="5">
+                        <FormGroup>
+                          <label>Website URL</label>
+                          <Input
+                            name="website_url"
+                            placeholder="Website URL"
+                            type="text"
+                            onChange={this.handleChange}
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col className="pr-md-1" md="5">
+                        <FormGroup>
+                          <label>CoinGecko URL</label>
+                          <Input
+                            name="coingecko_url"
+                            placeholder="logo url"
+                            type="text"
+                            onChange={this.handleChange}
                           />
                         </FormGroup>
                       </Col>
@@ -134,8 +193,10 @@ class TokenForm extends React.Component {
                         <FormGroup>
                           <label>Watch List</label>
                           <Input
+                            name="watchlist_addresses"
                             placeholder="Address Comma Separated"
                             type="text"
+                            onChange={this.handleChange}
                           />
                         </FormGroup>
                       </Col>
@@ -144,7 +205,7 @@ class TokenForm extends React.Component {
                 </CardBody>
 
                 <CardFooter>
-                  <Button className="btn-fill" color="primary" type="submit">
+                  <Button className="btn-fill" color="primary" type="submit" onClick={this.handleSubmit}>
                     Save
                   </Button>
                 </CardFooter>
@@ -157,4 +218,5 @@ class TokenForm extends React.Component {
   }
 }
 
-export default TokenForm;
+export default withRouter(connect(null, { createToken })(TokenForm));
+

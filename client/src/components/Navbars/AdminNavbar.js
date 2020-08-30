@@ -39,8 +39,6 @@ import {
   Modal
 } from "reactstrap";
 
-import hist from '../../history'
-
 import { selectCoin } from '../../actions/action_coins'
 
 
@@ -93,6 +91,11 @@ class AdminNavbar extends React.Component {
     });
   };
 
+  selectCoinAndGoToPage(coin) {
+    this.props.selectCoin(coin)
+    this.props.history.push('/dashboard')
+  }
+
   renderTokenList() {
     return (
         this.props.coins.map((coin, index) => {
@@ -100,7 +103,7 @@ class AdminNavbar extends React.Component {
               <NavLink tag="li" key={index}>
                 <DropdownItem
                   className="nav-item"
-                  onClick={() => this.props.selectCoin(coin)}
+                  onClick={() => this.selectCoinAndGoToPage(coin)}
                 >
                   {coin.name}
                 </DropdownItem>

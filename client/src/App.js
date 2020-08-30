@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import hist from './history'
 import AdminLayout from "./layouts/Admin/Admin.js"
-import TokenForm from "./dashboard/TokenForm.js"
 
 
 function App() {

@@ -16,7 +16,6 @@
 
 */
 import Dashboard from "./views/Dashboard.js";
-import Map from "./views/Map.js";
 import Notifications from "./views/Notifications.js";
 import Rtl from "./views/Rtl.js";
 import TableList from "./views/TableList.js";
