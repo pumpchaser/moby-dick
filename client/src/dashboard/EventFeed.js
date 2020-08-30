@@ -89,7 +89,7 @@ class EventFeed extends Component {
                   <a href={transaction.fromUrl ? transaction.fromUrl : ''} target='_blank'>{transaction.from} ( ETH | {transaction.fromAddressBalance} {this.props.currentCoin.name}) </a>
                 </td>
                 <td>
-                  {displayAmount(transaction.value, this.props.currentCoin.decimal)}
+                  {transaction.value}
                 </td>
               </tr>
             )
