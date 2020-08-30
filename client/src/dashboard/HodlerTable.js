@@ -5,9 +5,7 @@ import { connect } from 'react-redux'
 import {
   Button,
   Card,
-  CardHeader,
   CardBody,
-  CardTitle,
   CardFooter,
   CardText,
 

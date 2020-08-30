@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Icon } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 
 import {
@@ -11,7 +10,6 @@ import {
 } from "reactstrap";
 
 import { displayAmount } from '../utils/amount'
-import web3 from '../web3';
 
 
 class EventFeed extends Component {
@@ -37,10 +35,6 @@ class EventFeed extends Component {
       'color': 'red'
     }
   }
-  constructor(props){
-    super(props)
-  }
-
   getTransactionType(transaction){
     if (transaction.event === 'Transfer') {
       if (transaction.returnValues.to.toLowerCase() ===this.props.currentCoin.uniswap_address.toLowerCase()){
