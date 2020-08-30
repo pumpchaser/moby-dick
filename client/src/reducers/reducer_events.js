@@ -1,4 +1,5 @@
 import { NEW_EVENT, CLEAR_EVENTS } from '../actions/action_events'
+import {getTransactionType, getFromAddress} from '../utils/event';
 
 export function eventsReducer(state = [], action) {
   switch (action.type) {
@@ -7,7 +8,12 @@ export function eventsReducer(state = [], action) {
     case NEW_EVENT:
       let existingEvents = state
       let event = action.payload
+      const transactionType = getTransactionType(event, action.currentToken)
+      const fromAddress = getFromAddress(event, transactionType)
+
       event['fromAddressBalance'] = action.fromAddressBalance
+      event['fromAddress'] = fromAddress
+      event['transactionType'] = transactionType
     	existingEvents.unshift(event)
       return Object.assign([], existingEvents)
     default:

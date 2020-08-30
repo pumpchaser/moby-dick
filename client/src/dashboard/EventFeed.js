@@ -37,16 +37,7 @@ class EventFeed extends Component {
       'color': 'red'
     }
   }
-  getTransactionType(transaction){
-    if (transaction.event === 'Transfer') {
-      if (transaction.returnValues.to.toLowerCase() ===this.props.currentCoin.uniswap_address.toLowerCase()){
-        return 'Sell'
-      } else {
-        return 'Buy'
-      }
-    }
-    return transaction.event
-  }
+
   calculateTimeDifference(transactionBlockNumber){
     const averageBlockTime = 13 * 1000
     const blockDiff = this.props.blockchain.currentBlock - transactionBlockNumber 
@@ -54,27 +45,19 @@ class EventFeed extends Component {
 
     return moment(time).fromNow()
   }
-  getFromTransaction(transaction, transactionType) {
-    if (transactionType == 'Buy'){ 
-      return transaction.returnValues.to || transaction.returnValues.owner
-    }
-    return transaction.returnValues.from || transaction.returnValues.owner
-  }
 
   processTransaction(transaction) {
     const amount = transaction.returnValues.tokens || transaction.returnValues.value
-    const transactionType = this.getTransactionType(transaction)
-    const fromAddress = this.getFromTransaction(transaction, transactionType)
 
     return {
-      'type': transactionType,
-      'from': fromAddress,
+      'type': transaction.transactionType,
+      'from': transaction.fromAddress,
       'timeSince': this.calculateTimeDifference(transaction.blockNumber),
       'to': transaction.returnValues.to,
-      'value': transactionType == 'Approval' ? '' : displayAmount(amount, this.props.currentCoin.decimal),
+      'value': transaction.transactionType == 'Approval' ? '' : displayAmount(amount, this.props.currentCoin.decimal),
       'key':  `${transaction.id}${transaction.logIndex}`,
       'url': `https://etherscan.io/tx/${transaction.transactionHash}`,
-      'fromUrl': fromAddress ? `https://etherscan.io/address/${fromAddress}` : '',
+      'fromUrl': transaction.fromAddress ? `https://etherscan.io/address/${transaction.fromAddress}` : '',
       'fromAddressBalance': displayAmount(transaction.fromAddressBalance, this.props.currentCoin.decimal)
     }
   }
@@ -86,8 +69,6 @@ class EventFeed extends Component {
         this.props.events.slice(0, 20).map((event) => {
             const transaction = this.processTransaction(event)
             const isTopHodler = this.props.topHodlers.map(h => h.address).includes(transaction.from)
-            // const eventIcon = (this.EVENT_CONFIG[transaction.type] && this.EVENT_CONFIG[transaction.type]['icon']) || 'icon-simple-addquestion'
-            // const iconColor = (this.EVENT_CONFIG[transaction.type] && this.EVENT_CONFIG[transaction.type]['color']) || 'black'
 
             return (
               <tr key={transaction.key}>

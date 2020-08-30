@@ -1,5 +1,6 @@
 import Api from '../api/api'
 import web3 from '../web3';
+import {getTransactionType, getFromAddress} from '../utils/event';
 
 export const NEW_EVENT = 'NEW_EVENT'
 export const CLEAR_EVENTS = 'CLEAR_EVENTS'
@@ -21,12 +22,13 @@ export function processEvents(newCoin) {
 		const currentBlock = await web3.eth.getBlockNumber()
 
 		contract.events.allEvents({fromBlock: currentBlock-20}, async (err, event) => {
-			const fromAddress = event.returnValues.from || event.returnValues.owner
+			const transactionType = getTransactionType(event, newCoin)
+			const fromAddress = getFromAddress(event, transactionType)
 			const fromAddressBalance = fromAddress ? await contract.methods.balanceOf(fromAddress).call() : null
 			dispatch({
 				type: NEW_EVENT,
 				payload: event,
-				currentToken: newCoin.name,
+				currentToken: newCoin,
 				fromAddressBalance: fromAddressBalance,
 				currentBlock: currentBlock
 			})
