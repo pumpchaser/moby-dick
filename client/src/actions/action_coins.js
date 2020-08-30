@@ -26,4 +26,13 @@ export function selectCoin(coin) {
   }
 }
 
-
+export function createToken(params) {
+  return (dispatch) => {
+    return Api.post(`${TOKENS_URL}`, params)
+      .then((request) => {
+        return { type: 'success' }
+      }).catch((error) => {
+        return { type: 'error' }
+      })
+  }
+}

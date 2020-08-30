@@ -9,12 +9,12 @@ export const TOP_HODLERS_URL = `${process.env.REACT_APP_BACKEND_URI}/hodlers`
 
 export const get = (url, config = {}) => axios.get(url, {
   ...config,
-  headers: { },
+  headers: {},
 })
 
 export const post = (url, data, config = {}) => axios.post(url, data, {
   ...config,
-  headers: { },
+  headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
 })
 
 export const put = (url, data, config = {}) => axios.put(url, data, {
