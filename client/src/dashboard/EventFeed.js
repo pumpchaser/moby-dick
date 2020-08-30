@@ -58,12 +58,13 @@ class EventFeed extends Component {
   processTransaction(transaction) {
     const fromAddress = transaction.returnValues.from || transaction.returnValues.owner
     const amount = transaction.returnValues.tokens || transaction.returnValues.value
+    const transactionType = this.getTransactionType(transaction)
     return {
-      'type': this.getTransactionType(transaction),
+      'type': transactionType,
       'from': fromAddress,
       'timeSince': this.calculateTimeDifference(transaction.blockNumber),
       'to': transaction.returnValues.to,
-      'value': displayAmount(amount, this.props.currentCoin.decimal),
+      'value': transactionType == 'Approval' ? '' : displayAmount(amount, this.props.currentCoin.decimal),
       'key':  `${transaction.id}${transaction.logIndex}`,
       'url': `https://etherscan.io/tx/${transaction.transactionHash}`,
       'fromUrl': fromAddress ? `https://etherscan.io/address/${fromAddress}` : '',
