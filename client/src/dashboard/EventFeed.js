@@ -48,17 +48,24 @@ class EventFeed extends Component {
     return transaction.event
   }
   calculateTimeDifference(transactionBlockNumber){
-    const averageBlockTime = 17 * 1.5 * 1000
+    const averageBlockTime = 13 * 1000
     const blockDiff = this.props.blockchain.currentBlock - transactionBlockNumber 
     const time = Date.now() - (blockDiff * averageBlockTime)
 
     return moment(time).fromNow()
   }
+  getFromTransaction(transaction, transactionType) {
+    if (transactionType == 'Buy'){ 
+      return transaction.returnValues.to || transaction.returnValues.owner
+    }
+    return transaction.returnValues.from || transaction.returnValues.owner
+  }
 
   processTransaction(transaction) {
-    const fromAddress = transaction.returnValues.from || transaction.returnValues.owner
     const amount = transaction.returnValues.tokens || transaction.returnValues.value
     const transactionType = this.getTransactionType(transaction)
+    const fromAddress = this.getFromTransaction(transaction, transactionType)
+
     return {
       'type': transactionType,
       'from': fromAddress,
