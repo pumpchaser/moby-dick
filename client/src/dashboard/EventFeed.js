@@ -68,7 +68,6 @@ class EventFeed extends Component {
             const transaction = this.processTransaction(event)
             const isTopHodler = this.props.topHodlers.map(h => h.address.toLowerCase()).includes(transaction.from.toLowerCase())
             const color = (this.EVENT_CONFIG[transaction.type] && this.EVENT_CONFIG[transaction.type]['color']) || 'black'
-
             return (
               <tr key={transaction.key}>
                 <td>
@@ -78,7 +77,7 @@ class EventFeed extends Component {
                   <a href={transaction.url} target='_blank' rel='noopener noreferrer' style={{'color': color}}>{transaction.type}</a>
                 </td>
                 <td>
-                  {/* {isTopHodler ? `Hodler #${this.props.topHodlers.findIndex(transaction.from)}` : ''} */}
+                  { isTopHodler ? `Hodler #${this.props.topHodlers.map(h => h.address.toLowerCase()).indexOf(transaction.from.toLowerCase())}` : ''} 
 
                   <a href={transaction.fromUrl ? transaction.fromUrl : ''} target='_blank' rel='noopener noreferrer'>{transaction.from} ( ETH | {transaction.fromAddressBalance} {this.props.currentCoin.name}) </a>
                 </td>
