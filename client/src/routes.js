@@ -42,6 +42,14 @@ var routes = [
     layout: "/admin"
   },
   {
+    path: "/tokens/:name",
+    name: "TokenForm",
+    rtlName: "الرموز",
+    icon: "tim-icons icon-atom",
+    component: TokenForm,
+    layout: "/admin"
+  },
+  {
     path: "/tokens",
     name: "ManageToken",
     rtlName: "خرائط",

@@ -36,3 +36,15 @@ export function createToken(params) {
       })
   }
 }
+
+export function editToken(params) {
+  return (dispatch) => {
+    return Api.post(`${TOKENS_URL}/edit`, params)
+      .then((request) => {
+        return { type: 'success' }
+      }).catch((error) => {
+        return { type: 'error' }
+      })
+  }
+
+}
