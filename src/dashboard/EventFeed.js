@@ -64,12 +64,12 @@ class EventFeed extends Component {
 
   renderFeed(){
     return (
-        this.props.events.slice(0, 20).map((event) => {
+        this.props.events.slice(0, 20).map((event, index) => {
             const transaction = this.processTransaction(event)
             const isTopHodler = this.props.topHodlers.map(h => h.address.toLowerCase()).includes(transaction.from.toLowerCase())
             const color = (this.EVENT_CONFIG[transaction.type] && this.EVENT_CONFIG[transaction.type]['color']) || 'black'
             return (
-              <tr key={transaction.key}>
+              <tr key={index}>
                 <td>
                   {transaction.timeSince}
                 </td>
