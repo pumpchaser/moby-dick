@@ -78,7 +78,6 @@ class EventFeed extends Component {
                   <a href={transaction.url} target='_blank' rel='noopener noreferrer'>{transaction.type}</a>
                 </td>
                 <td>
-                  {isTopHodler ? `Hodler #${this.props.topHodlers.findIndex(transaction.from)}` : ''}
 
                   <a href={transaction.fromUrl ? transaction.fromUrl : ''} target='_blank' rel='noopener noreferrer'>{transaction.from} ( ETH | {transaction.fromAddressBalance} {this.props.currentCoin.name}) </a>
                 </td>
