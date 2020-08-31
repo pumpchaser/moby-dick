@@ -1,8 +1,9 @@
 export function getTransactionType(transaction, currentCoin){
   if (transaction.event === 'Transfer') {
-    if (transaction.returnValues.to.toLowerCase() === currentCoin.uniswap_address.toLowerCase()){
+    if (transaction.returnValues.to.toLowerCase() === currentCoin.uniswap_address.toLowerCase()) {
       return 'Sell'
-    } else {
+    } 
+    if (transaction.returnValues.from.toLowerCase() === currentCoin.uniswap_address.toLowerCase()) {
       return 'Buy'
     }
   }
