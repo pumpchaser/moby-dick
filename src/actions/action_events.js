@@ -5,6 +5,7 @@ import {getTransactionType, getFromAddress} from '../utils/event';
 export const NEW_EVENT = 'NEW_EVENT'
 export const CLEAR_EVENTS = 'CLEAR_EVENTS'
 
+const IGNORE_TRANSACTION_TYPES = ['Approval', 'Transfer']
 
 async function getContractAbi(contractAddress) {
 	const etherscanURL = `https://api.etherscan.io/api?module=contract&action=getabi&address=${contractAddress}&apikey=${process.env.REACT_APP_ETHERSCAN_API_KEY}`
@@ -25,13 +26,16 @@ export function processEvents(newCoin) {
 			const transactionType = getTransactionType(event, newCoin)
 			const fromAddress = getFromAddress(event, transactionType)
 			const fromAddressBalance = fromAddress ? await contract.methods.balanceOf(fromAddress).call() : null
-			dispatch({
-				type: NEW_EVENT,
-				payload: event,
-				currentToken: newCoin,
-				fromAddressBalance: fromAddressBalance,
-				currentBlock: currentBlock
-			})
+			if (!IGNORE_TRANSACTION_TYPES.includes(transactionType)) {
+				dispatch({
+					type: NEW_EVENT,
+					payload: event,
+					currentToken: newCoin,
+					fromAddressBalance: fromAddressBalance,
+					currentBlock: currentBlock
+				})				
+			}
+
 		})
 	}
 }
