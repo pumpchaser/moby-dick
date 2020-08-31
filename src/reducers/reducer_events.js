@@ -15,7 +15,7 @@ export function eventsReducer(state = [], action) {
       event['fromAddress'] = fromAddress
       event['transactionType'] = transactionType
     	existingEvents.unshift(event)
-      existingEvents.sort( (a, b) => b.timestamp - a.timestamp)
+      existingEvents.sort( (a, b) => b.blockNumber - a.blockNumber)
       return Object.assign([], existingEvents)
     default:
       return state
