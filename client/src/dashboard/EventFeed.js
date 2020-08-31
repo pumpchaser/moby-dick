@@ -21,7 +21,7 @@ class EventFeed extends Component {
     },
     'Buy': {
       'icon': 'sign in',
-      'color': 'green'
+      'color': '#09ff09'
     },
     'Sell': {
       'icon': 'sign out',
@@ -39,7 +39,7 @@ class EventFeed extends Component {
 
   calculateTimeDifference(transactionBlockNumber){
     const averageBlockTime = 13 * 1000
-    const blockDiff = this.props.blockchain.currentBlock - transactionBlockNumber 
+    const blockDiff = this.props.blockchain.currentBlock - transactionBlockNumber
     const time = Date.now() - (blockDiff * averageBlockTime)
 
     return moment(time).fromNow()
@@ -63,11 +63,11 @@ class EventFeed extends Component {
 
 
   renderFeed(){
-
     return (
         this.props.events.slice(0, 20).map((event) => {
             const transaction = this.processTransaction(event)
             const isTopHodler = this.props.topHodlers.map(h => h.address.toLowerCase()).includes(transaction.from.toLowerCase())
+            const color = (this.EVENT_CONFIG[transaction.type] && this.EVENT_CONFIG[transaction.type]['color']) || 'black'
 
             return (
               <tr key={transaction.key}>
@@ -75,9 +75,10 @@ class EventFeed extends Component {
                   {transaction.timeSince}
                 </td>
                 <td>
-                  <a href={transaction.url} target='_blank' rel='noopener noreferrer'>{transaction.type}</a>
+                  <a href={transaction.url} target='_blank' rel='noopener noreferrer' style={{'color': color}}>{transaction.type}</a>
                 </td>
                 <td>
+                  {/* {isTopHodler ? `Hodler #${this.props.topHodlers.findIndex(transaction.from)}` : ''} */}
 
                   <a href={transaction.fromUrl ? transaction.fromUrl : ''} target='_blank' rel='noopener noreferrer'>{transaction.from} ( ETH | {transaction.fromAddressBalance} {this.props.currentCoin.name}) </a>
                 </td>

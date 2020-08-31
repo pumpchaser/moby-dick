@@ -27,6 +27,9 @@ class ManageToken extends Component {
     this.props.history.push("/tokens/form")
   }
 
+  goToEditForm(coin) {
+    this.props.history.push(`/tokens/${coin.name}`)
+  }
 
   renderTokens() {
     return (
@@ -40,7 +43,7 @@ class ManageToken extends Component {
             <td>{coin.decimal}</td>
             <td>{coin.uniswap_address}</td>
             <td>{coin.last_block}/ETH_LAST_BLOCK</td>
-            <td><i className="tim-icons icon-pencil" /></td>
+            <td><i className="tim-icons icon-pencil" onClick={() => this.goToEditForm(coin)}/></td>
           </tr>
         )
       })

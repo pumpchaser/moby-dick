@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Router,  Route } from "react-router-dom";
 
 import hist from './history'
 import AdminLayout from "./layouts/Admin/Admin.js"
@@ -11,8 +11,8 @@ function App() {
         <Route exact path="/" render={ (props) => <AdminLayout {...props} />} />
         <Route exact path="/dashboard" render={ (props) => <AdminLayout {...props} />} />
         <Route exact path="/tokens" render={ (props) => <AdminLayout {...props} />} />
+        <Route path="/tokens/:name" render={ (props) => <AdminLayout {...props} />} />
         <Route exact path="/tokens/form" render={ (props) => <AdminLayout {...props} />} />
-
       </Router>
   );
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
+import { matchPath } from 'react-router'
 import { withRouter } from "react-router-dom"
 // reactstrap components
 import {
@@ -16,7 +17,7 @@ import {
   Col
 } from "reactstrap";
 
-import { createToken } from '../actions/action_coins'
+import { fetchCoins, createToken, editToken } from '../actions/action_coins'
 
 class TokenForm extends React.Component {
   constructor(props) {
@@ -47,10 +48,49 @@ class TokenForm extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault()
-    this.props.createToken(this.state).then((response) => {
-      if (response.type === 'success') {
-          this.props.history.push('/tokens')
-      }
+    if (this.props.match.params.name) {
+      // Edit
+      this.props.editToken(this.state).then((response) => {
+        if (response.type === 'success') {
+            this.props.history.push('/tokens')
+        }
+      })
+    } else {
+      // Creation
+      this.props.createToken(this.state).then((response) => {
+        if (response.type === 'success') {
+            this.props.history.push('/tokens')
+        }
+      })
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.match.params.name) {
+      var token = this.findCoinByName(this.props.match.params.name)
+      this.setState({
+        'name': token.name,
+        'contract_address': token.contract_address,
+        'uniswap_address': token.uniswap_address,
+        'events': token.events,
+        'synced': token.synced,
+        'decimal': token.decimal,
+        'total_supply': token.total_supply,
+        'block_creation': token.block_creation,
+        'watchlist_addresses': token.watchlist_addresses,
+        'logo_url': token.logo_url,
+        'website_url': token.website_url,
+        'coingecko_url': token.coingecko_url,
+        'twitter_url': token.twitter_url,
+        'telegram_url': token.telegram_url,
+      })
+    }
+  }
+
+
+  findCoinByName(name) {
+    return this.props.coins.find(token => {
+      return token.name === name
     })
   }
 
@@ -75,8 +115,9 @@ class TokenForm extends React.Component {
                             placeholder="name"
                             name="name"
                             type="text"
+                            value={this.state.name}
                             onChange={this.handleChange}
-                            required="true"
+                            required
                           />
                         </FormGroup>
                       </Col>
@@ -87,6 +128,7 @@ class TokenForm extends React.Component {
                             name="contract_address"
                             placeholder="Address"
                             type="text"
+                            value={this.state.contract_address}
                             onChange={this.handleChange}
                           />
                         </FormGroup>
@@ -98,8 +140,9 @@ class TokenForm extends React.Component {
                           <label>Events</label>
                           <Input
                             name="events"
-                            placeholder="'Transfer,Approval'"
+                            placeholder="Transfer,Approval"
                             type="text"
+                            value={this.state.events}
                             onChange={this.handleChange}
                           />
                         </FormGroup>
@@ -111,6 +154,7 @@ class TokenForm extends React.Component {
                             name="block_creation"
                             placeholder="Creation Block"
                             type="text"
+                            value={this.state.block_creation}
                             onChange={this.handleChange}
                           />
                         </FormGroup>
@@ -124,6 +168,7 @@ class TokenForm extends React.Component {
                             name="decimal"
                             placeholder="Decimal"
                             type="text"
+                            value={this.state.decimal}
                             onChange={this.handleChange}
                           />
                         </FormGroup>
@@ -135,6 +180,7 @@ class TokenForm extends React.Component {
                             name="total_supply"
                             placeholder="Total Supply"
                             type="text"
+                            value={this.state.total_supply}
                             onChange={this.handleChange}
                           />
                         </FormGroup>
@@ -148,6 +194,7 @@ class TokenForm extends React.Component {
                             name="uniswap_address"
                             placeholder="Uniswap"
                             type="text"
+                            value={this.state.uniswap_address}
                             onChange={this.handleChange}
                           />
                         </FormGroup>
@@ -159,6 +206,7 @@ class TokenForm extends React.Component {
                             name="logo_url"
                             placeholder="logo url"
                             type="text"
+                            value={this.state.logo_url}
                             onChange={this.handleChange}
                           />
                         </FormGroup>
@@ -172,6 +220,7 @@ class TokenForm extends React.Component {
                             name="website_url"
                             placeholder="Website URL"
                             type="text"
+                            value={this.state.website_url}
                             onChange={this.handleChange}
                           />
                         </FormGroup>
@@ -183,6 +232,7 @@ class TokenForm extends React.Component {
                             name="coingecko_url"
                             placeholder="logo url"
                             type="text"
+                            value={this.state.coingecko_url}
                             onChange={this.handleChange}
                           />
                         </FormGroup>
@@ -196,6 +246,7 @@ class TokenForm extends React.Component {
                             name="watchlist_addresses"
                             placeholder="Address Comma Separated"
                             type="text"
+                            value={this.state.watchlist_addresses}
                             onChange={this.handleChange}
                           />
                         </FormGroup>
@@ -218,5 +269,11 @@ class TokenForm extends React.Component {
   }
 }
 
-export default withRouter(connect(null, { createToken })(TokenForm));
+function mapStateToProps(state) {
+  return {
+    coins: state.coins
+  }
+}
+
+export default withRouter(connect(mapStateToProps, { createToken, editToken, fetchCoins })(TokenForm));
 
