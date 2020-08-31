@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import web3 from '../web3';
 
 import {
   Card,
@@ -54,7 +53,7 @@ class EventFeed extends Component {
       'from': transaction.fromAddress,
       'timeSince': this.calculateTimeDifference(transaction.blockNumber),
       'to': transaction.returnValues.to,
-      'value': transaction.transactionType == 'Approval' ? '' : displayAmount(amount, this.props.currentCoin.decimal),
+      'value': transaction.transactionType === 'Approval' ? '' : displayAmount(amount, this.props.currentCoin.decimal),
       'key':  `${transaction.id}${transaction.logIndex}`,
       'url': `https://etherscan.io/tx/${transaction.transactionHash}`,
       'fromUrl': transaction.fromAddress ? `https://etherscan.io/address/${transaction.fromAddress}` : '',
@@ -76,12 +75,12 @@ class EventFeed extends Component {
                   {transaction.timeSince}
                 </td>
                 <td>
-                  <a href={transaction.url} target='_blank'>{transaction.type}</a>
+                  <a href={transaction.url} target='_blank' rel='noopener noreferrer'>{transaction.type}</a>
                 </td>
                 <td>
                   {isTopHodler ? `Hodler #${this.props.topHodlers.findIndex(transaction.from)}` : ''}
 
-                  <a href={transaction.fromUrl ? transaction.fromUrl : ''} target='_blank'>{transaction.from} ( ETH | {transaction.fromAddressBalance} {this.props.currentCoin.name}) </a>
+                  <a href={transaction.fromUrl ? transaction.fromUrl : ''} target='_blank' rel='noopener noreferrer'>{transaction.from} ( ETH | {transaction.fromAddressBalance} {this.props.currentCoin.name}) </a>
                 </td>
                 <td>
                   {transaction.value}

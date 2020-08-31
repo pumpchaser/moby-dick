@@ -10,7 +10,7 @@ export function getTransactionType(transaction, currentCoin){
 }
 
 export function getFromAddress(transaction, transactionType) {
-  if (transactionType == 'Buy'){ 
+  if (transactionType === 'Buy'){ 
     return transaction.returnValues.to || transaction.returnValues.owner
   }
   return transaction.returnValues.from || transaction.returnValues.owner
