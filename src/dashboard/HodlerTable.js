@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import { connect } from 'react-redux'
 
 import {
@@ -15,19 +14,35 @@ import {
 import { displayAmount } from '../utils/amount'
 import { fetchTopHodlers } from '../actions/action_hodlers'
 
+const STREAK_UPPER_BOUND = -2
+const STREAK_LOWER_BOUND = 2
+
 class HodlerTable extends Component {
+  renderRibbon(hodler) {
+    if (!hodler.streak || hodler.streak < STREAK_UPPER_BOUND || hodler.streak > STREAK_LOWER_BOUND) {
+      return (
+        <td></td>
+      )
+    }
+    return (
+      <td>
+      {hodler.streak}
+      </td>
+    )
+  }
   renderTopHodlers() {
     return (
       this.props.topHodlers.map((hodler, index) => {
         return(
-          <tr key={hodler.address}>
+          <tr key={index}>
+            {this.renderRibbon(hodler)}
             <td>#{index}</td>
             <td>{hodler.address}</td>
             <td>
               {displayAmount(hodler.amount, this.props.currentCoin.decimal)}
             </td>
           </tr>
-        )
+      )
       })
     )
   }
@@ -68,6 +83,7 @@ class HodlerTable extends Component {
           <Table className="tablesorter" responsive>
             <thead className="text-primary">
               <tr>
+                <th>Streak</th>
                 <th>#</th>
                 <th>Address</th>
                 <th>Amount</th>

@@ -16,15 +16,15 @@ function topHodlerIndex(topHodlers, hodlerAddress){
 }
 
 function reverseStreak(hodler, transactionType) {
-	return (hodler['streak'] < 0 && transactionType === BUY) || 
-		   (hodler['streak'] > 0 && transactionType === SELL)
+	return (hodler.streak < 0 && transactionType === BUY) || 
+		   (hodler.streak > 0 && transactionType === SELL)
 }
 
 function getStreakCount(hodler, transactionType) {
-	if (!hodler['streak'] || reverseStreak(hodler, transactionType)) {
+	if (!hodler.streak || reverseStreak(hodler, transactionType)) {
 		return TRANSACTION_DIRECTION[transactionType]
 	}
-	return hodler['streak'] += TRANSACTION_DIRECTION[transactionType]
+	return hodler.streak += TRANSACTION_DIRECTION[transactionType]
 }
 
 export function topHodlersReducer(state = [], action) {
@@ -37,7 +37,7 @@ export function topHodlersReducer(state = [], action) {
     		return state
     	}
     	let topHodler = topHodlers[topHodlerIndex(topHodlers, action.hodlerAddress)]
-    	topHodler['streak'] = getStreakCount(topHodler, action.transactionType)
+    	topHodler.streak = getStreakCount(topHodler, action.transactionType)
     	console.log("New Top Hodler Streak", topHodler)
     	return Object.assign([], topHodlers)
     default:
