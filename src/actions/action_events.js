@@ -26,13 +26,14 @@ export function processEvents(newCoin) {
 			const transactionType = getTransactionType(event, newCoin)
 			const fromAddress = getFromAddress(event, transactionType)
 			const fromAddressBalance = fromAddress ? await contract.methods.balanceOf(fromAddress).call() : null
+
 			if (!IGNORE_TRANSACTION_TYPES.includes(transactionType)) {
 				dispatch({
 					type: NEW_EVENT,
 					payload: event,
 					currentToken: newCoin,
 					fromAddressBalance: fromAddressBalance,
-					currentBlock: currentBlock
+					currentBlock: await web3.eth.getBlockNumber()
 				})				
 			}
 
