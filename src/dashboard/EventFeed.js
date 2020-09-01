@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 
+import { Label } from 'semantic-ui-react'
+
 import {
   Card,
   CardHeader,
@@ -61,10 +63,19 @@ class EventFeed extends Component {
     }
   }
 
+  displayTopHodlersRank(isTopHodler, transaction) {
+    if (isTopHodler) {
+      return (
+        <Label color={'purple'} key={'purple'} style={{'marginRight':'5px'}}>
+          #{this.props.topHodlers.map(h => h.address.toLowerCase()).indexOf(transaction.from.toLowerCase())}
+        </Label>
+      )
+    }
+  }
 
   renderFeed(){
     return (
-        this.props.events.slice(0, 20).map((event, index) => {
+        this.props.events.slice(0, 50).map((event, index) => {
             const transaction = this.processTransaction(event)
             const isTopHodler = this.props.topHodlers.map(h => h.address.toLowerCase()).includes(transaction.from.toLowerCase())
             const color = (this.EVENT_CONFIG[transaction.type] && this.EVENT_CONFIG[transaction.type]['color']) || 'black'
@@ -77,8 +88,7 @@ class EventFeed extends Component {
                   <a href={transaction.url} target='_blank' rel='noopener noreferrer' style={{'color': color}}>{transaction.type}</a>
                 </td>
                 <td>
-                  { isTopHodler ? `Hodler #${this.props.topHodlers.map(h => h.address.toLowerCase()).indexOf(transaction.from.toLowerCase())}` : ''} 
-
+                  { this.displayTopHodlersRank(isTopHodler, transaction) }
                   <a href={transaction.fromUrl ? transaction.fromUrl : ''} target='_blank' rel='noopener noreferrer'>{transaction.from} ( ETH | {transaction.fromAddressBalance} {this.props.currentCoin.name}) </a>
                 </td>
                 <td>
