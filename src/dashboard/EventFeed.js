@@ -12,6 +12,7 @@ import {
   Table,
 } from "reactstrap";
 
+import ethereum from '../assets/img/ethereum-logo.png'
 import { displayAmount } from '../utils/amount'
 import moment from 'moment'
 
@@ -49,7 +50,8 @@ class EventFeed extends Component {
       'key':  `${transaction.id}${transaction.logIndex}`,
       'url': `https://etherscan.io/tx/${transaction.transactionHash}`,
       'fromUrl': transaction.fromAddress ? `https://etherscan.io/address/${transaction.fromAddress}` : '',
-      'fromAddressBalance': displayAmount(transaction.fromAddressBalance, this.props.currentCoin.decimal)
+      'fromAddressBalance': displayAmount(transaction.fromAddressBalance, this.props.currentCoin.decimal),
+      'fromAddressBalanceEth': displayAmount(transaction.fromAddressBalanceEth, 18)
     }
   }
 
@@ -69,6 +71,7 @@ class EventFeed extends Component {
             const transaction = this.processTransaction(event)
             const isTopHodler = transaction.from ? this.props.topHodlers.map(h => h.address.toLowerCase()).includes(transaction.from.toLowerCase()) : false
             const color = (this.EVENT_CONFIG[transaction.type] && this.EVENT_CONFIG[transaction.type]['color']) || 'black'
+            const tokenLogo = ('logo_url' in this.props.currentCoin) ? this.props.currentCoin.logo_url : 'https://www.pinclipart.com/picdir/middle/106-1069393_clipart-token-png-download.png'
             return (
               <tr key={index}>
                 <td>
@@ -79,7 +82,19 @@ class EventFeed extends Component {
                 </td>
                 <td>
                   { this.displayTopHodlersRank(isTopHodler, transaction) }
-                  <a href={transaction.fromUrl ? transaction.fromUrl : ''} target='_blank' rel='noopener noreferrer'>{transaction.from} ( ETH | {transaction.fromAddressBalance} {this.props.currentCoin.name}) </a>
+                  <a href={transaction.fromUrl ? transaction.fromUrl : ''} target='_blank' rel='noopener noreferrer'>{transaction.from.toLowerCase()}
+                  </a>
+                </td>
+                <td>
+                    <Label image size={'small'} color={'black'} style={{'marginRight':'5px'}}>
+                      <img src={ethereum} />
+                        {transaction.fromAddressBalanceEth}
+                    </Label>
+                    <Label image size={'small'} color={'black'}>
+                      <img src={tokenLogo} />
+                        {transaction.fromAddressBalance}
+                    </Label>
+
                 </td>
                 <td>
                   {transaction.value}
@@ -103,8 +118,8 @@ class EventFeed extends Component {
                 <th>Time</th>
                 <th>Type</th>
                 <th>Address</th>
+                <th>Balance</th>
                 <th>Amount ({this.props.currentCoin.name})</th>
-                <th>Amount (ETH)</th>
               </tr>
             </thead>
             <tbody>

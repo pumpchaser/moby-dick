@@ -11,7 +11,9 @@ export function eventsReducer(state = [], action) {
       const transactionType = getTransactionType(event, action.currentToken)
       const fromAddress = getFromAddress(event, transactionType)
 
+
       event['fromAddressBalance'] = action.fromAddressBalance
+      event['fromAddressBalanceEth'] = action.fromAddressBalanceEth
       event['fromAddress'] = fromAddress
       event['transactionType'] = transactionType
     	existingEvents.unshift(event)

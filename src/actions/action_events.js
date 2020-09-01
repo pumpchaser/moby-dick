@@ -24,10 +24,11 @@ export function processEvents(newCoin) {
 		const contract = new web3.eth.Contract(contractAbi, contractAddress)
 		const currentBlock = await web3.eth.getBlockNumber()
 
-		contract.events.allEvents({fromBlock: currentBlock-100}, async (err, event) => {
+		contract.events.allEvents({fromBlock: currentBlock-50}, async (err, event) => {
 			const transactionType = getTransactionType(event, newCoin)
 			const fromAddress = getFromAddress(event, transactionType)
 			const fromAddressBalance = fromAddress ? await contract.methods.balanceOf(fromAddress).call() : null
+			const fromAddressBalanceEth = fromAddress ? await web3.eth.getBalance(fromAddress) : null
 
 			if (!IGNORE_TRANSACTION_TYPES.includes(transactionType)) {
 				dispatch({
@@ -35,6 +36,7 @@ export function processEvents(newCoin) {
 					payload: event,
 					currentToken: newCoin,
 					fromAddressBalance: fromAddressBalance,
+          fromAddressBalanceEth: fromAddressBalanceEth,
 					currentBlock: await web3.eth.getBlockNumber()
 				})	
 				dispatch({
