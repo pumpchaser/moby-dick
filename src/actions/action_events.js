@@ -1,11 +1,13 @@
 import Api from '../api/api'
 import web3 from '../web3';
 import {getTransactionType, getFromAddress} from '../utils/event';
+import { APPROVAL, TRANSFER } from '../constants/transactions'
 
 export const NEW_EVENT = 'NEW_EVENT'
 export const CLEAR_EVENTS = 'CLEAR_EVENTS'
+export const UPDATE_HODLER_STREAK = 'UPDATE_HODLER_STREAK'
 
-const IGNORE_TRANSACTION_TYPES = ['Approval', 'Transfer']
+const IGNORE_TRANSACTION_TYPES = [APPROVAL, TRANSFER]
 
 async function getContractAbi(contractAddress) {
 	const etherscanURL = `https://api.etherscan.io/api?module=contract&action=getabi&address=${contractAddress}&apikey=${process.env.REACT_APP_ETHERSCAN_API_KEY}`
@@ -34,7 +36,12 @@ export function processEvents(newCoin) {
 					currentToken: newCoin,
 					fromAddressBalance: fromAddressBalance,
 					currentBlock: await web3.eth.getBlockNumber()
-				})				
+				})	
+				dispatch({
+					type: UPDATE_HODLER_STREAK,
+					hodlerAddress: fromAddress,
+					transactionType: transactionType
+				})			
 			}
 
 		})

@@ -1,0 +1,7 @@
+export const APPROVAL = 'Approval'
+export const BURN = 'Burn'
+export const BUY = 'Buy'
+export const SELL = 'Sell'
+export const STAKE = 'Stake'
+export const TRANSFER = 'Transfer'
+export const UNSTAKE = 'Unstake'

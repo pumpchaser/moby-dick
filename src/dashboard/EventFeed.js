@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+import { APPROVAL, BUY, SELL } from '../constants/transactions'
 
 import {
   Card,
@@ -15,24 +16,13 @@ import moment from 'moment'
 
 class EventFeed extends Component {
   EVENT_CONFIG = {
-    'Approval': {
-      'icon': 'warning',
+    [APPROVAL]: {
       'color': 'yellow'
     },
-    'Buy': {
-      'icon': 'sign in',
+    [BUY]: {
       'color': '#09ff09'
     },
-    'Sell': {
-      'icon': 'sign out',
-      'color': 'red'
-    },
-    'Burn': {
-      'icon': 'fire',
-      'color': 'black'
-    },
-    'Unstake': {
-      'icon': 'dollar sign',
+    [SELL]: {
       'color': 'red'
     }
   }
@@ -53,7 +43,7 @@ class EventFeed extends Component {
       'from': transaction.fromAddress,
       'timeSince': this.calculateTimeDifference(transaction.blockNumber),
       'to': transaction.returnValues.to,
-      'value': transaction.transactionType === 'Approval' ? '' : displayAmount(amount, this.props.currentCoin.decimal),
+      'value': transaction.transactionType === APPROVAL ? '' : displayAmount(amount, this.props.currentCoin.decimal),
       'key':  `${transaction.id}${transaction.logIndex}`,
       'url': `https://etherscan.io/tx/${transaction.transactionHash}`,
       'fromUrl': transaction.fromAddress ? `https://etherscan.io/address/${transaction.fromAddress}` : '',
@@ -66,7 +56,6 @@ class EventFeed extends Component {
     return (
         this.props.events.slice(0, 50).map((event, index) => {
             const transaction = this.processTransaction(event)
-
             const isTopHodler = transaction.from ? this.props.topHodlers.map(h => h.address.toLowerCase()).includes(transaction.from.toLowerCase()) : false
             const color = (this.EVENT_CONFIG[transaction.type] && this.EVENT_CONFIG[transaction.type]['color']) || 'black'
             return (
