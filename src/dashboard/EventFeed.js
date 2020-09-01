@@ -77,7 +77,8 @@ class EventFeed extends Component {
     return (
         this.props.events.slice(0, 50).map((event, index) => {
             const transaction = this.processTransaction(event)
-            const isTopHodler = this.props.topHodlers.map(h => h.address.toLowerCase()).includes(transaction.from.toLowerCase())
+
+            const isTopHodler = transaction.from ? this.props.topHodlers.map(h => h.address.toLowerCase()).includes(transaction.from.toLowerCase()) : false
             const color = (this.EVENT_CONFIG[transaction.type] && this.EVENT_CONFIG[transaction.type]['color']) || 'black'
             return (
               <tr key={index}>
