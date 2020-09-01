@@ -11,8 +11,8 @@ function App() {
         <Route exact path="/" render={ (props) => <AdminLayout {...props} />} />
         <Route exact path="/dashboard" render={ (props) => <AdminLayout {...props} />} />
         <Route exact path="/tokens" render={ (props) => <AdminLayout {...props} />} />
+        <Route exact path="/token/form" render={ (props) => <AdminLayout {...props} />} />
         <Route path="/tokens/:name" render={ (props) => <AdminLayout {...props} />} />
-        <Route exact path="/tokens/form" render={ (props) => <AdminLayout {...props} />} />
       </Router>
   );
 }

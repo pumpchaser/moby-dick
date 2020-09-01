@@ -24,7 +24,7 @@ class ManageToken extends Component {
   }
 
   goToTokenForm() {
-    this.props.history.push("/tokens/form")
+    this.props.history.push("/token/form")
   }
 
   goToEditForm(coin) {
