@@ -34,7 +34,7 @@ var routes = [
     layout: "/admin"
   },
   {
-    path: "/tokens/form",
+    path: "/token/form",
     name: "TokenForm",
     rtlName: "الرموز",
     icon: "tim-icons icon-atom",

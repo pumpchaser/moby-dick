@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
-import { matchPath } from 'react-router'
 import { withRouter } from "react-router-dom"
 // reactstrap components
 import {
