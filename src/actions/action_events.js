@@ -36,7 +36,7 @@ export function processEvents(newCoin) {
 					payload: event,
 					currentToken: newCoin,
 					fromAddressBalance: fromAddressBalance,
-		      fromAddressBalanceEth: fromAddressBalanceEth,
+					fromAddressBalanceEth: fromAddressBalanceEth,
 					currentBlock: await web3.eth.getBlockNumber()
 				})	
 				dispatch({
