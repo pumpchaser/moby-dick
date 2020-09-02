@@ -73,7 +73,7 @@ class HodlerTable extends Component {
             <a href="#pablo" onClick={e => e.preventDefault()}>
               <img
                 className="avatar"
-                src={tokenLogo)}
+                src={tokenLogo)
               />
               <h5 className="title">{this.props.currentCoin.name}</h5>
             </a>
