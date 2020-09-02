@@ -35,8 +35,7 @@ class HodlerTable extends Component {
       this.props.topHodlers.map((hodler, index) => {
         return(
           <tr key={index}>
-            {this.renderRibbon(hodler)}
-            <td>#{index}</td>
+            <td>#{index+1}</td>
             <td>{hodler.address}</td>
             <td>
               {displayAmount(hodler.amount, this.props.currentCoin.decimal)}
@@ -53,13 +52,15 @@ class HodlerTable extends Component {
           if (this.props.currentCoin != null) {
               this.props.fetchTopHodlers(this.props.currentCoin.name)
           }
-      }, 30000);
+      }, 120000);
     } catch(e) {
       console.log(e);
     }
   }
 
   render() {
+
+    const tokenLogo = ('logo_url' in this.props.currentCoin) ? this.props.currentCoin.logo_url : 'https://www.pinclipart.com/picdir/middle/106-1069393_clipart-token-png-download.png'
     return(
       <Card className="card-user">
         <CardBody>
@@ -71,9 +72,8 @@ class HodlerTable extends Component {
             <div className="block block-four" />
             <a href="#pablo" onClick={e => e.preventDefault()}>
               <img
-                alt="..."
                 className="avatar"
-                src={require("../assets/img/emilyz.jpg")}
+                src={tokenLogo)}
               />
               <h5 className="title">{this.props.currentCoin.name}</h5>
             </a>
@@ -83,7 +83,6 @@ class HodlerTable extends Component {
           <Table className="tablesorter" responsive>
             <thead className="text-primary">
               <tr>
-                <th>Streak</th>
                 <th>#</th>
                 <th>Address</th>
                 <th>Amount</th>
