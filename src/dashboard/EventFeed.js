@@ -86,11 +86,11 @@ class EventFeed extends Component {
                   </a>
                 </td>
                 <td>
-                    <Label image size={'small'} color={'black'} style={{'marginRight':'5px'}}>
+                    <Label image size={'medium'} color={'black'} style={{'marginRight':'5px'}}>
                       <img src={ethereum} />
                         {transaction.fromAddressBalanceEth}
                     </Label>
-                    <Label image size={'small'} color={'black'}>
+                    <Label image size={'medium'} color={'black'}>
                       <img src={tokenLogo} />
                         {transaction.fromAddressBalance}
                     </Label>
@@ -112,7 +112,7 @@ class EventFeed extends Component {
           <CardTitle tag="h4">Recent Transactions</CardTitle>
         </CardHeader>
         <CardBody>
-          <Table className="tablesorter" responsive>
+          <Table className="tablesorter" responsive style={{fontSize:'14px'}}>
             <thead className="text-primary">
               <tr>
                 <th>Time</th>
