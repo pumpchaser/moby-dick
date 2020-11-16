@@ -17,6 +17,17 @@ export function fetchCoins() {
   }
 }
 
+export function syncToken(name) {
+  return (dispatch) => {
+    return Api.post(`${TOKENS_URL}/sync`, {'name': name})
+      .then((request) => {
+        return { type: 'success' }
+      }).catch((error) => {
+        return { type: 'error' }
+      })
+  }
+}
+
 export function selectCoin(coin) {
   return (dispatch) => {
     dispatch({ type: SELECT_COIN, payload: coin })

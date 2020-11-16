@@ -15,7 +15,7 @@ import {
   Table,
 } from "reactstrap";
 
-import { fetchCoins } from '../actions/action_coins'
+import { fetchCoins, syncToken } from '../actions/action_coins'
 
 
 class ManageToken extends Component {
@@ -31,6 +31,10 @@ class ManageToken extends Component {
     this.props.history.push(`/tokens/${coin.name}`)
   }
 
+  syncToken(name) {
+    this.props.syncToken(name)
+  }
+
   renderTokens() {
     return (
       this.props.coins.map(coin => {
@@ -42,7 +46,8 @@ class ManageToken extends Component {
             <td>{coin.total_supply}</td>
             <td>{coin.decimal}</td>
             <td>{coin.uniswap_address}</td>
-            <td>{coin.last_block}/ETH_LAST_BLOCK</td>
+            <td>{coin.last_block}</td>
+            <td><i className="tim-icons icon-refresh-01" onClick={() => this.syncToken(coin.name)}/></td>
             <td><i className="tim-icons icon-pencil" onClick={() => this.goToEditForm(coin)}/></td>
           </tr>
         )
@@ -105,6 +110,7 @@ class ManageToken extends Component {
                       <th>Uniswap</th>
                       <th>Last Sync</th>
                       <th></th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -124,4 +130,4 @@ function mapStateToProps(state) {
   return { coins: state.coins}
 }
 
-export default withRouter(connect(mapStateToProps, { fetchCoins })(ManageToken));
+export default withRouter(connect(mapStateToProps, { fetchCoins, syncToken })(ManageToken));
